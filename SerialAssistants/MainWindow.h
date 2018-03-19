@@ -11,6 +11,10 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <qstyle.h>
+#include <qtimer.h>
+#include <QTime>
+#include <qpalette.h>
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -24,8 +28,14 @@ private:
 	Ui::Dialog dialog;
 	QSerialPort *my_serial;
 	QActionGroup *switchgroup;
+	QLabel *sendLabel, *receiveLabel, *messageLabel;
+	QPalette pa1, pa2;
+	int totalSend, totalReceive;
 	void CreateSignal();
 	void CreateActions();
+	void SetStatusBar();
+	QTime currentTime;
+	QTimer *sendTimer;
 private slots:
 	void ShowAboutDialog();	//显示about dialog
 	void CloseWindow();		//关闭主窗口
@@ -35,4 +45,8 @@ private slots:
 	void SendData();
 	void ShowData();
 	void Clear();
+	void StringToHex(QString str, QByteArray &senddata);
+	char ConvertHexChar(char ch);
+	void AutoSend(bool);
+	void ChangeSendTime(int);
 };

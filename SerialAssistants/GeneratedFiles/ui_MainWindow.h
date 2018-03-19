@@ -25,6 +25,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextEdit>
@@ -84,6 +85,7 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QCheckBox *sendCheckBox;
     QSpinBox *timespinBox;
+    QSpacerItem *verticalSpacer;
     QGridLayout *gridLayout;
     QTextEdit *ReceiveTextEdit;
     QTextEdit *SendTextEdit;
@@ -353,11 +355,18 @@ public:
         timespinBox = new QSpinBox(layoutWidget4);
         timespinBox->setObjectName(QStringLiteral("timespinBox"));
         timespinBox->setMinimumSize(QSize(80, 20));
+        timespinBox->setMinimum(10);
+        timespinBox->setMaximum(10000);
+        timespinBox->setSingleStep(10);
 
         horizontalLayout_4->addWidget(timespinBox);
 
 
         verticalLayout_4->addWidget(SendSettingGroupBox);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_4->addItem(verticalSpacer);
 
 
         horizontalLayout_5->addLayout(verticalLayout_4);

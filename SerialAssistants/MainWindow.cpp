@@ -2,16 +2,33 @@
 #include <qdebug.h>
 #include <qscrollbar.h>
 MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
+	: QMainWindow(parent), totalSend(0), totalReceive(0)
 {	
 	ui.setupUi(this);
 	setWindowIcon(QIcon("./image/globe.png"));
 	my_serial = new QSerialPort(this);
+	currentTime = QTime::currentTime();
+	sendTimer = new QTimer(this);
 	CreateActions();
 	SearchPort();//启动搜索端口号
 	SetSerial();
+	SetStatusBar();
 	CreateSignal();
 
+}
+
+void MainWindow::SetStatusBar()
+{
+	pa1.setColor(QPalette::WindowText, Qt::red);
+	pa2.setColor(QPalette::WindowText, Qt::darkGreen);
+	messageLabel = new QLabel;
+	messageLabel->setPalette(pa1);
+	messageLabel->setText(my_serial->portName() + " 已关闭");
+	ui.statusBar->addWidget(messageLabel,3); //现实永久信息
+	receiveLabel = new QLabel("Rx：0 Bytes");
+	ui.statusBar->addWidget(receiveLabel, 3); //现实永久信息	
+	sendLabel = new QLabel("Tx：0 Bytes");
+	ui.statusBar->addWidget(sendLabel,3); //现实永久信息
 }
 
 void MainWindow::CreateSignal()
@@ -19,16 +36,12 @@ void MainWindow::CreateSignal()
 	connect(ui.aboutAction, SIGNAL(triggered()), this, SLOT(ShowAboutDialog()));//显示相关信息Dialog 
 	connect(ui.quitAction, SIGNAL(triggered()), this, SLOT(CloseWindow()));		//关闭窗口
 	connect(ui.action, SIGNAL(triggered()), this, SLOT(SearchPort()));			//按下刷新按钮刷新端口
-
-	connect(ui.baudrateComboBox, SIGNAL(activated(int)), this, SLOT(SetSerial()));
-	connect(ui.checkbitComboBox, SIGNAL(activated(int)), this, SLOT(SetSerial()));
-	connect(ui.databitComboBox, SIGNAL(activated(int)), this, SLOT(SetSerial()));
-	connect(ui.flowcontrolComboBox, SIGNAL(activated(int)), this, SLOT(SetSerial()));
-	connect(ui.stopbitComboBox, SIGNAL(activated(int)), this, SLOT(SetSerial()));
-	connect(ui.SerialComboBox, SIGNAL(activated(int)), this, SLOT(SetSerial()));
 	connect(ui.SendButton, SIGNAL(clicked()), this, SLOT(SendData()));
 	connect(ui.clearAction, SIGNAL(triggered()), this, SLOT(Clear()));
 	connect(my_serial, SIGNAL(readyRead()), this, SLOT(ShowData()));
+	connect(sendTimer, SIGNAL(timeout()), this, SLOT(SendData()));
+	connect(ui.sendCheckBox, SIGNAL(clicked(bool)), this, SLOT(AutoSend(bool))); \
+	connect(ui.timespinBox, SIGNAL(valueChanged(int)), this, SLOT(ChangeSendTime(int)));
 }
 
 void MainWindow::CreateActions()
@@ -180,6 +193,8 @@ void MainWindow::SetSerial()
 		my_serial->setFlowControl(QSerialPort::SoftwareControl);
 		break;
 	}
+	//my_serial->setDataTerminalReady(true);
+	//my_serial->setRequestToSend(true);
 	my_serial->clearError();
 	my_serial->clear();
 }
@@ -188,6 +203,7 @@ void MainWindow::ShowAlignment(QAction* act)
 {
 	if (act == ui.startAction)
 	{
+		SetSerial();
 		if (!my_serial->isOpen())
 		{
 			ui.stopAction->setChecked(false);
@@ -195,16 +211,13 @@ void MainWindow::ShowAlignment(QAction* act)
 			bool com = my_serial->open(QIODevice::ReadWrite);
 			if (com)
 			{
-				SetSerial();
-				//my_serial->setDataTerminalReady(true);
-				//my_serial->setRequestToSend(true);
-				ui.statusBar->setStyleSheet("color:green");
-				ui.statusBar->showMessage(my_serial->portName() + " 打开成功");
+				messageLabel->setPalette(pa2);
+				messageLabel->setText(my_serial->portName() + " 打开成功");
 			}
 			else
 			{
-				ui.statusBar->setStyleSheet("color:red");
-				ui.statusBar->showMessage(my_serial->portName() + " 打开失败", 3000);
+				messageLabel->setPalette(pa1);
+				messageLabel->setText(my_serial->portName() + " 打开失败");
 			}
 		}
 	}
@@ -224,8 +237,8 @@ void MainWindow::ShowAlignment(QAction* act)
 		if (my_serial->isOpen())
 		{
 			my_serial->close();
-			ui.statusBar->setStyleSheet("color:red");
-			ui.statusBar->showMessage(my_serial->portName() + " 已关闭", 3000);
+			messageLabel->setPalette(pa1);
+			messageLabel->setText(my_serial->portName() + " 打开失败");
 		}
 	}
 }
@@ -241,7 +254,12 @@ void MainWindow::SendData()
 			QByteArray sdata;
 			if (ui.HexButton_2->isChecked())
 			{
-				sdata.append(sendstr).toHex();
+				int len = sendstr.length();
+				if (len % 2 == 1)   //如果发送的数据个数为奇数的，则在前面最后落单的字符前添加一个字符0
+				{
+					sendstr = sendstr.insert(len - 1, '0'); //insert(int position, const QString & str)
+				}
+				StringToHex(sendstr, sdata);//将str字符串转换为16进制的形式
 				if (ui.ShowsendcheckBox->isChecked())
 				{
 					for (int i = 0; i < sdata.length(); i++)
@@ -250,26 +268,51 @@ void MainWindow::SendData()
 						QString str = QString("%1").arg(outChar & 0xFF, 2, 16, QLatin1Char('0')) + " ";
 						show += str.toUpper();
 					}
-					if (ui.AutocheckBox->isChecked())
-						ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + sdata + "\n");
+					if (ui.ShowtimecheckBox->isChecked())
+					{
+						QString strTime = "[" + currentTime.toString("hh:mm:ss:zzz") + "] ";
+						if (ui.AutocheckBox->isChecked())
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + show + "\n");
+						else
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + show);
+					}
 					else
-						ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + sdata);
+					{
+						if (ui.AutocheckBox->isChecked())
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + show + "\n");
+						else
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + show);
+					}
 					ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
 				}
 			}
 			else
 			{
-				sdata.append(sendstr);
+				//sdata.append(sendstr);
+				sdata.append(sendstr).toHex();
 				if (ui.ShowsendcheckBox->isChecked())
 				{
-					if (ui.AutocheckBox->isChecked())
-						ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + sdata + "\n");
+					if (ui.ShowtimecheckBox->isChecked())
+					{
+						QString strTime = "[" + currentTime.toString("hh:mm:ss:zzz") + "] ";
+						if (ui.AutocheckBox->isChecked())
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + sendstr + "\n");
+						else
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + sendstr);
+					}
 					else
-						ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + sdata);
+					{
+						if (ui.AutocheckBox->isChecked())
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + sendstr + "\n");
+						else
+							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + sendstr);
+					}
 					ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
 				}
 			}
 			my_serial->write(sdata, sdata.length());
+			totalSend += sdata.length();
+			sendLabel->setText("Tx：" + QString::number(totalSend, 10) + " Bytes");
 		}
 		else
 		{
@@ -299,11 +342,91 @@ void MainWindow::ShowData()
 	}	
 	if(ui.AutocheckBox->isChecked())
 		show += "\n";
-	ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + show);
+	if (ui.ShowtimecheckBox->isChecked())
+	{
+		QString strTime = "[" + currentTime.toString("hh:mm:ss:zzz") + "] ";
+		ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + show);
+	}
+	else
+		ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText()  + show);
 	ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
+	totalReceive += showdata.length();
+	receiveLabel->setText("Rx：" + QString::number(totalReceive, 10) + " Bytes");
+}
+
+void MainWindow::AutoSend(bool state)
+{
+	qDebug() << "111";
+	if(state)
+	{
+		sendTimer->start(ui.timespinBox->value());
+	}
+	else
+	{
+		sendTimer->stop();
+	}
+}
+
+void MainWindow::ChangeSendTime(int value)
+{
+	qDebug() << "2212";
+	if (ui.sendCheckBox->isChecked())
+	{
+		sendTimer->start(value);
+	}
+		
 }
 
 void MainWindow::Clear()
 {
 	ui.ReceiveTextEdit->clear();
+	totalSend = 0;
+	totalReceive = 0;
+	sendLabel->setText("Tx：0 Bytes");
+	receiveLabel->setText("Rx：0 Bytes");
+}
+
+void MainWindow::StringToHex(QString str, QByteArray &senddata) //字符串转换为十六进制数据0-F
+{
+	int hexdata, lowhexdata;
+	int hexdatalen = 0;
+	int len = str.length();
+	senddata.resize(len / 2);
+	char lstr, hstr;
+
+	for (int i = 0; i<len; )
+	{
+		//char lstr,
+		hstr = str[i].toLatin1();
+		if (hstr == ' ')
+		{
+			i++;
+			continue;
+		}
+		i++;
+		if (i >= len)
+			break;
+		lstr = str[i].toLatin1();
+		hexdata = ConvertHexChar(hstr);
+		lowhexdata = ConvertHexChar(lstr);
+		if ((hexdata == 16) || (lowhexdata == 16))
+			break;
+		else
+			hexdata = hexdata * 16 + lowhexdata;
+		i++;
+		senddata[hexdatalen] = (char)hexdata;
+		hexdatalen++;
+	}
+	senddata.resize(hexdatalen);
+}
+
+char MainWindow::ConvertHexChar(char ch)
+{
+	if ((ch >= '0') && (ch <= '9'))
+		return ch - 0x30;
+	else if ((ch >= 'A') && (ch <= 'F'))
+		return ch - 'A' + 10;
+	else if ((ch >= 'a') && (ch <= 'f'))
+		return ch - 'a' + 10;
+	else return ch - ch;//不在0-f范围内的会发送成0
 }
