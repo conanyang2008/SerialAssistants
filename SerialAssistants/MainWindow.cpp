@@ -19,16 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::SetStatusBar()
 {
-	pa1.setColor(QPalette::WindowText, Qt::red);
-	pa2.setColor(QPalette::WindowText, Qt::darkGreen);
-	messageLabel = new QLabel;
-	messageLabel->setPalette(pa1);
-	messageLabel->setText(my_serial->portName() + " 已关闭");
-	ui.statusBar->addWidget(messageLabel,3); //现实永久信息
 	receiveLabel = new QLabel("Rx：0 Bytes");
-	ui.statusBar->addWidget(receiveLabel, 3); //现实永久信息	
+	receiveLabel->setFixedWidth(200);
+	ui.statusBar->addPermanentWidget(receiveLabel); //现实永久信息	
 	sendLabel = new QLabel("Tx：0 Bytes");
-	ui.statusBar->addWidget(sendLabel,3); //现实永久信息
+	sendLabel->setFixedWidth(200);
+	ui.statusBar->addPermanentWidget(sendLabel); //现实永久信息
 }
 
 void MainWindow::CreateSignal()
@@ -40,8 +36,9 @@ void MainWindow::CreateSignal()
 	connect(ui.clearAction, SIGNAL(triggered()), this, SLOT(Clear()));
 	connect(my_serial, SIGNAL(readyRead()), this, SLOT(ShowData()));
 	connect(sendTimer, SIGNAL(timeout()), this, SLOT(SendData()));
-	connect(ui.sendCheckBox, SIGNAL(clicked(bool)), this, SLOT(AutoSend(bool))); \
+	connect(ui.sendCheckBox, SIGNAL(clicked(bool)), this, SLOT(AutoSend(bool)));
 	connect(ui.timespinBox, SIGNAL(valueChanged(int)), this, SLOT(ChangeSendTime(int)));
+	connect(ui.comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(SendTextChange()));
 }
 
 void MainWindow::CreateActions()
@@ -55,6 +52,7 @@ void MainWindow::CreateActions()
 
 void MainWindow::ShowAboutDialog()
 {
+	aboutDialog.setModal(true);
 	aboutDialog.show();
 }
 
@@ -193,8 +191,8 @@ void MainWindow::SetSerial()
 		my_serial->setFlowControl(QSerialPort::SoftwareControl);
 		break;
 	}
-	//my_serial->setDataTerminalReady(true);
-	//my_serial->setRequestToSend(true);
+	my_serial->setRequestToSend(true);
+	my_serial->setDataTerminalReady(true);
 	my_serial->clearError();
 	my_serial->clear();
 }
@@ -211,13 +209,13 @@ void MainWindow::ShowAlignment(QAction* act)
 			bool com = my_serial->open(QIODevice::ReadWrite);
 			if (com)
 			{
-				messageLabel->setPalette(pa2);
-				messageLabel->setText(my_serial->portName() + " 打开成功");
+				ui.statusBar->setStyleSheet("QStatusBar{ color:green }");
+				ui.statusBar->showMessage(my_serial->portName() + " 打开成功");
 			}
 			else
 			{
-				messageLabel->setPalette(pa1);
-				messageLabel->setText(my_serial->portName() + " 打开失败");
+				ui.statusBar->setStyleSheet("QStatusBar{ color:red }");
+				ui.statusBar->showMessage(my_serial->portName() + " 打开失败");
 			}
 		}
 	}
@@ -237,8 +235,8 @@ void MainWindow::ShowAlignment(QAction* act)
 		if (my_serial->isOpen())
 		{
 			my_serial->close();
-			messageLabel->setPalette(pa1);
-			messageLabel->setText(my_serial->portName() + " 打开失败");
+			ui.statusBar->setStyleSheet("QStatusBar{ color:red }");
+			ui.statusBar->showMessage(my_serial->portName() + " 已关闭", 3000);
 		}
 	}
 }
@@ -250,6 +248,21 @@ void MainWindow::SendData()
 		if (!ui.SendTextEdit->toPlainText().isEmpty())
 		{
 			QString sendstr = ui.SendTextEdit->toPlainText();
+			int j = 0;
+			for (int i = 0; i < ui.comboBox->count(); i++)
+			{
+				if (ui.comboBox->itemText(i) == sendstr)
+				{
+					break;
+				}
+				else
+					++j;
+			}
+			if (j == ui.comboBox->count())
+			{
+				ui.comboBox->insertItem(0, sendstr);
+				ui.comboBox->setCurrentIndex(0);
+			}
 			QString show = "";
 			QByteArray sdata;
 			if (ui.HexButton_2->isChecked())
@@ -375,6 +388,11 @@ void MainWindow::ChangeSendTime(int value)
 		sendTimer->start(value);
 	}
 		
+}
+
+void MainWindow::SendTextChange()
+{
+	ui.SendTextEdit->setText(ui.comboBox->currentText());
 }
 
 void MainWindow::Clear()

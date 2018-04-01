@@ -59,6 +59,7 @@ public:
     QLabel *checkbitLabel;
     QLabel *stopbitLabel;
     QLabel *flowcontrolLabel;
+    QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout_2;
     QComboBox *SerialComboBox;
     QComboBox *baudrateComboBox;
@@ -87,9 +88,9 @@ public:
     QSpinBox *timespinBox;
     QSpacerItem *verticalSpacer;
     QGridLayout *gridLayout;
-    QTextEdit *ReceiveTextEdit;
     QTextEdit *SendTextEdit;
     QPushButton *SendButton;
+    QTextEdit *ReceiveTextEdit;
     QComboBox *comboBox;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
@@ -102,7 +103,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(800, 600);
+        MainWindowClass->resize(900, 601);
         MainWindowClass->setMinimumSize(QSize(800, 600));
         MainWindowClass->setMaximumSize(QSize(16777215, 16777215));
         saveAction = new QAction(MainWindowClass);
@@ -165,9 +166,9 @@ public:
         SerialSettingGroupBox->setMaximumSize(QSize(219, 220));
         layoutWidget = new QWidget(SerialSettingGroupBox);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(11, 30, 182, 174));
+        layoutWidget->setGeometry(QRect(13, 30, 198, 174));
         horizontalLayout = new QHBoxLayout(layoutWidget);
-        horizontalLayout->setSpacing(6);
+        horizontalLayout->setSpacing(2);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
@@ -176,79 +177,83 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         SerialLabel = new QLabel(layoutWidget);
         SerialLabel->setObjectName(QStringLiteral("SerialLabel"));
-        SerialLabel->setMinimumSize(QSize(30, 20));
+        SerialLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(SerialLabel);
 
         baudrateLabel = new QLabel(layoutWidget);
         baudrateLabel->setObjectName(QStringLiteral("baudrateLabel"));
-        baudrateLabel->setMinimumSize(QSize(30, 20));
+        baudrateLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(baudrateLabel);
 
         databitLabel = new QLabel(layoutWidget);
         databitLabel->setObjectName(QStringLiteral("databitLabel"));
-        databitLabel->setMinimumSize(QSize(30, 20));
+        databitLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(databitLabel);
 
         checkbitLabel = new QLabel(layoutWidget);
         checkbitLabel->setObjectName(QStringLiteral("checkbitLabel"));
-        checkbitLabel->setMinimumSize(QSize(30, 20));
+        checkbitLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(checkbitLabel);
 
         stopbitLabel = new QLabel(layoutWidget);
         stopbitLabel->setObjectName(QStringLiteral("stopbitLabel"));
-        stopbitLabel->setMinimumSize(QSize(30, 20));
+        stopbitLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(stopbitLabel);
 
         flowcontrolLabel = new QLabel(layoutWidget);
         flowcontrolLabel->setObjectName(QStringLiteral("flowcontrolLabel"));
-        flowcontrolLabel->setMinimumSize(QSize(30, 20));
+        flowcontrolLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(flowcontrolLabel);
 
 
         horizontalLayout->addLayout(verticalLayout);
 
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
+
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(10);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         SerialComboBox = new QComboBox(layoutWidget);
         SerialComboBox->setObjectName(QStringLiteral("SerialComboBox"));
-        SerialComboBox->setMinimumSize(QSize(120, 20));
+        SerialComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(SerialComboBox);
 
         baudrateComboBox = new QComboBox(layoutWidget);
         baudrateComboBox->setObjectName(QStringLiteral("baudrateComboBox"));
-        baudrateComboBox->setMinimumSize(QSize(120, 20));
+        baudrateComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(baudrateComboBox);
 
         databitComboBox = new QComboBox(layoutWidget);
         databitComboBox->setObjectName(QStringLiteral("databitComboBox"));
-        databitComboBox->setMinimumSize(QSize(120, 20));
+        databitComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(databitComboBox);
 
         checkbitComboBox = new QComboBox(layoutWidget);
         checkbitComboBox->setObjectName(QStringLiteral("checkbitComboBox"));
-        checkbitComboBox->setMinimumSize(QSize(120, 20));
+        checkbitComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(checkbitComboBox);
 
         stopbitComboBox = new QComboBox(layoutWidget);
         stopbitComboBox->setObjectName(QStringLiteral("stopbitComboBox"));
-        stopbitComboBox->setMinimumSize(QSize(120, 20));
+        stopbitComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(stopbitComboBox);
 
         flowcontrolComboBox = new QComboBox(layoutWidget);
         flowcontrolComboBox->setObjectName(QStringLiteral("flowcontrolComboBox"));
-        flowcontrolComboBox->setMinimumSize(QSize(120, 20));
+        flowcontrolComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(flowcontrolComboBox);
 
@@ -358,6 +363,8 @@ public:
         timespinBox->setMinimum(10);
         timespinBox->setMaximum(10000);
         timespinBox->setSingleStep(10);
+        timespinBox->setValue(1000);
+        timespinBox->setDisplayIntegerBase(10);
 
         horizontalLayout_4->addWidget(timespinBox);
 
@@ -375,23 +382,15 @@ public:
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         gridLayout->setSizeConstraint(QLayout::SetFixedSize);
-        ReceiveTextEdit = new QTextEdit(centralWidget);
-        ReceiveTextEdit->setObjectName(QStringLiteral("ReceiveTextEdit"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(ReceiveTextEdit->sizePolicy().hasHeightForWidth());
-        ReceiveTextEdit->setSizePolicy(sizePolicy);
-        ReceiveTextEdit->setMinimumSize(QSize(550, 400));
-        ReceiveTextEdit->setTabChangesFocus(false);
-        ReceiveTextEdit->setReadOnly(true);
-
-        gridLayout->addWidget(ReceiveTextEdit, 0, 0, 1, 2);
-
         SendTextEdit = new QTextEdit(centralWidget);
         SendTextEdit->setObjectName(QStringLiteral("SendTextEdit"));
         SendTextEdit->setMinimumSize(QSize(450, 60));
         SendTextEdit->setMaximumSize(QSize(16777215, 60));
+        QFont font;
+        font.setPointSize(9);
+        font.setBold(true);
+        font.setWeight(75);
+        SendTextEdit->setFont(font);
 
         gridLayout->addWidget(SendTextEdit, 1, 0, 1, 1);
 
@@ -402,10 +401,29 @@ public:
 
         gridLayout->addWidget(SendButton, 1, 1, 1, 1);
 
+        ReceiveTextEdit = new QTextEdit(centralWidget);
+        ReceiveTextEdit->setObjectName(QStringLiteral("ReceiveTextEdit"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(ReceiveTextEdit->sizePolicy().hasHeightForWidth());
+        ReceiveTextEdit->setSizePolicy(sizePolicy);
+        ReceiveTextEdit->setMinimumSize(QSize(550, 400));
+        ReceiveTextEdit->setFont(font);
+        ReceiveTextEdit->setTabChangesFocus(false);
+        ReceiveTextEdit->setReadOnly(true);
+
+        gridLayout->addWidget(ReceiveTextEdit, 0, 0, 1, 2);
+
         comboBox = new QComboBox(centralWidget);
         comboBox->setObjectName(QStringLiteral("comboBox"));
-        comboBox->setMinimumSize(QSize(550, 30));
+        comboBox->setMinimumSize(QSize(550, 20));
         comboBox->setMaximumSize(QSize(16777215, 30));
+        QFont font1;
+        font1.setBold(true);
+        font1.setWeight(75);
+        comboBox->setFont(font1);
+        comboBox->setMaxVisibleItems(5);
 
         gridLayout->addWidget(comboBox, 2, 0, 1, 2);
 
@@ -421,7 +439,7 @@ public:
         MainWindowClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 800, 23));
+        menuBar->setGeometry(QRect(0, 0, 900, 23));
         fileMenu = new QMenu(menuBar);
         fileMenu->setObjectName(QStringLiteral("fileMenu"));
         editMenu = new QMenu(menuBar);

@@ -28,7 +28,7 @@ private:
 	Ui::Dialog dialog;
 	QSerialPort *my_serial;
 	QActionGroup *switchgroup;
-	QLabel *sendLabel, *receiveLabel, *messageLabel;
+	QLabel *sendLabel, *receiveLabel;
 	QPalette pa1, pa2;
 	int totalSend, totalReceive;
 	void CreateSignal();
@@ -49,4 +49,5 @@ private slots:
 	char ConvertHexChar(char ch);
 	void AutoSend(bool);
 	void ChangeSendTime(int);
+	void SendTextChange();
 };

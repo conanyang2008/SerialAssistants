@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>900</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -49,13 +49,16 @@
         <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
-           <x>11</x>
+           <x>13</x>
            <y>30</y>
-           <width>182</width>
+           <width>198</width>
            <height>174</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>2</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout">
             <property name="spacing">
@@ -65,7 +68,7 @@
              <widget class="QLabel" name="SerialLabel">
               <property name="minimumSize">
                <size>
-                <width>30</width>
+                <width>35</width>
                 <height>20</height>
                </size>
               </property>
@@ -78,7 +81,7 @@
              <widget class="QLabel" name="baudrateLabel">
               <property name="minimumSize">
                <size>
-                <width>30</width>
+                <width>35</width>
                 <height>20</height>
                </size>
               </property>
@@ -91,7 +94,7 @@
              <widget class="QLabel" name="databitLabel">
               <property name="minimumSize">
                <size>
-                <width>30</width>
+                <width>35</width>
                 <height>20</height>
                </size>
               </property>
@@ -104,7 +107,7 @@
              <widget class="QLabel" name="checkbitLabel">
               <property name="minimumSize">
                <size>
-                <width>30</width>
+                <width>35</width>
                 <height>20</height>
                </size>
               </property>
@@ -117,7 +120,7 @@
              <widget class="QLabel" name="stopbitLabel">
               <property name="minimumSize">
                <size>
-                <width>30</width>
+                <width>35</width>
                 <height>20</height>
                </size>
               </property>
@@ -130,7 +133,7 @@
              <widget class="QLabel" name="flowcontrolLabel">
               <property name="minimumSize">
                <size>
-                <width>30</width>
+                <width>35</width>
                 <height>20</height>
                </size>
               </property>
@@ -142,6 +145,19 @@
            </layout>
           </item>
           <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <property name="spacing">
              <number>10</number>
@@ -150,7 +166,7 @@
              <widget class="QComboBox" name="SerialComboBox">
               <property name="minimumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>20</height>
                </size>
               </property>
@@ -160,7 +176,7 @@
              <widget class="QComboBox" name="baudrateComboBox">
               <property name="minimumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>20</height>
                </size>
               </property>
@@ -213,7 +229,7 @@
              <widget class="QComboBox" name="databitComboBox">
               <property name="minimumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>20</height>
                </size>
               </property>
@@ -243,7 +259,7 @@
              <widget class="QComboBox" name="checkbitComboBox">
               <property name="minimumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>20</height>
                </size>
               </property>
@@ -278,7 +294,7 @@
              <widget class="QComboBox" name="stopbitComboBox">
               <property name="minimumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>20</height>
                </size>
               </property>
@@ -303,7 +319,7 @@
              <widget class="QComboBox" name="flowcontrolComboBox">
               <property name="minimumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>20</height>
                </size>
               </property>
@@ -542,6 +558,12 @@
             <property name="singleStep">
              <number>10</number>
             </property>
+            <property name="value">
+             <number>1000</number>
+            </property>
+            <property name="displayIntegerBase">
+             <number>10</number>
+            </property>
            </widget>
           </item>
          </layout>
@@ -568,28 +590,6 @@
       <property name="sizeConstraint">
        <enum>QLayout::SetFixedSize</enum>
       </property>
-      <item row="0" column="0" colspan="2">
-       <widget class="QTextEdit" name="ReceiveTextEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>550</width>
-          <height>400</height>
-         </size>
-        </property>
-        <property name="tabChangesFocus">
-         <bool>false</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QTextEdit" name="SendTextEdit">
         <property name="minimumSize">
@@ -603,6 +603,13 @@
           <width>16777215</width>
           <height>60</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
        </widget>
       </item>
@@ -625,12 +632,41 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QTextEdit" name="ReceiveTextEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>550</width>
+          <height>400</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="tabChangesFocus">
+         <bool>false</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0" colspan="2">
        <widget class="QComboBox" name="comboBox">
         <property name="minimumSize">
          <size>
           <width>550</width>
-          <height>30</height>
+          <height>20</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -638,6 +674,15 @@
           <width>16777215</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="maxVisibleItems">
+         <number>5</number>
         </property>
        </widget>
       </item>
@@ -672,7 +717,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>900</width>
      <height>23</height>
     </rect>
    </property>
