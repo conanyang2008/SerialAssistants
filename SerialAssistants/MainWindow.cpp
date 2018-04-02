@@ -1,6 +1,9 @@
 #include "MainWindow.h"
 #include <qdebug.h>
 #include <qscrollbar.h>
+#include <qfile.h>
+#include <qmessagebox.h>
+
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent), totalSend(0), totalReceive(0)
 {	
@@ -39,6 +42,7 @@ void MainWindow::CreateSignal()
 	connect(ui.sendCheckBox, SIGNAL(clicked(bool)), this, SLOT(AutoSend(bool)));
 	connect(ui.timespinBox, SIGNAL(valueChanged(int)), this, SLOT(ChangeSendTime(int)));
 	connect(ui.comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(SendTextChange()));
+	connect(ui.saveAction, SIGNAL(triggered()), this, SLOT(ShowLogDialog()));
 }
 
 void MainWindow::CreateActions()
@@ -54,6 +58,11 @@ void MainWindow::ShowAboutDialog()
 {
 	aboutDialog.setModal(true);
 	aboutDialog.show();
+}
+
+void MainWindow::ShowLogDialog()
+{
+	log.show();
 }
 
 void MainWindow::CloseWindow()
@@ -337,6 +346,7 @@ void MainWindow::SendData()
 void MainWindow::ShowData()
 {
 	//qDebug() << "11111";
+	QString strTime = "[" + currentTime.currentTime().toString("hh:mm:ss:zzz") + "] ";
 	QByteArray showdata = my_serial->readAll();
 	qDebug() << "show data is " << showdata;
 	QString show = "接收：";
@@ -357,7 +367,7 @@ void MainWindow::ShowData()
 		show += "\n";
 	if (ui.ShowtimecheckBox->isChecked())
 	{
-		QString strTime = "[" + currentTime.toString("hh:mm:ss:zzz") + "] ";
+		
 		ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + show);
 	}
 	else
@@ -365,6 +375,19 @@ void MainWindow::ShowData()
 	ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
 	totalReceive += showdata.length();
 	receiveLabel->setText("Rx：" + QString::number(totalReceive, 10) + " Bytes");
+	if (log.isLog)
+	{
+		qDebug() << "isopen";
+		QFile file(log.getFileName());//文件命名  
+		if (!file.open(QFile::WriteOnly | QFile::Text | QFile::Append))     //检测文件是否打开  
+		{
+			QMessageBox::information(this, "Error Message", "Please Select a Text File!");
+			return;
+		}
+		QTextStream out(&file);
+		out << strTime + show;
+		file.close();
+	}
 }
 
 void MainWindow::AutoSend(bool state)
