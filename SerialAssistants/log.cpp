@@ -5,13 +5,34 @@
 #include <qfile.h>
 #include <qdatetime.h>
 #include <qdebug.h>
+#include <qsettings.h>
 
-Log::Log(QWidget *parent): isLog(false)
+Log::Log(QWidget *parent)
 {
 	ui_log.setupUi(this);
+	SetCurrent();
 	connect(ui_log.pushButton, SIGNAL(clicked()), this, SLOT(Close()));
 	connect(ui_log.openButton, SIGNAL(clicked()), this, SLOT(OpenPath()));
-	connect(ui_log.checkBox, SIGNAL(stateChanged(int)), this, SLOT(IsLog()));
+}
+
+Log::~Log()
+{
+	QString iniFilePath = "./ini/self.ini";
+	QSettings settings(iniFilePath, QSettings::IniFormat);
+
+	settings.setValue("Log/Save", ui_log.checkBox->isChecked());
+	settings.setValue("Log/Time", ui_log.checkBox_2->isChecked());
+	settings.setValue("Log/Filename", ui_log.lineEdit->text());
+}
+
+void Log::SetCurrent()
+{
+	QString iniFilePath = "./ini/self.ini";
+	QSettings settings(iniFilePath, QSettings::IniFormat);
+
+	ui_log.checkBox->setChecked(settings.value("Log/Save").toBool());
+	ui_log.checkBox_2->setChecked(settings.value("Log/Time").toBool());
+	ui_log.lineEdit->setText(settings.value("Log/Filename").toString());
 }
 
 void Log::Close()
@@ -19,13 +40,12 @@ void Log::Close()
 	this->close();
 }
 
-void Log::IsLog()
+bool Log::IsLog()
 {
-	qDebug() << "trtrtrtrt";
 	if (ui_log.checkBox->isChecked())
-		isLog = true;
+		return true;
 	else
-		isLog = false;
+		return false;
 }
 
 QString Log::getFileName()

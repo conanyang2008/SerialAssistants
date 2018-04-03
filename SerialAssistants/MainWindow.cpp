@@ -3,12 +3,14 @@
 #include <qscrollbar.h>
 #include <qfile.h>
 #include <qmessagebox.h>
+#include <qsettings.h>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent), totalSend(0), totalReceive(0)
 {	
 	ui.setupUi(this);
 	setWindowIcon(QIcon("./image/globe.png"));
+	SetCurrent();
 	my_serial = new QSerialPort(this);
 	currentTime = QTime::currentTime();
 	sendTimer = new QTimer(this);
@@ -20,6 +22,29 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+MainWindow::~MainWindow()
+{
+	QString iniFilePath = "./ini/self.ini";
+	QSettings settings(iniFilePath, QSettings::IniFormat);
+
+	settings.setValue("SerialSetting/Baudrate", ui.baudrateComboBox->currentIndex());
+	settings.setValue("SerialSetting/Databit", ui.databitComboBox->currentIndex());
+	settings.setValue("SerialSetting/Checkbit", ui.checkbitComboBox->currentIndex());
+	settings.setValue("SerialSetting/Stopbit", ui.stopbitComboBox->currentIndex());
+	settings.setValue("SerialSetting/Flowcontrol", ui.flowcontrolComboBox->currentIndex());
+
+	settings.setValue("Receive/Ascii", ui.AsciiButton_1->isChecked());
+	settings.setValue("Receive/Hex", ui.HexButton_1->isChecked());
+	settings.setValue("Receive/Auto", ui.AutocheckBox->isChecked());
+	settings.setValue("Receive/Showsend", ui.ShowsendcheckBox->isChecked());
+	settings.setValue("Receive/Showtime", ui.ShowtimecheckBox->isChecked());
+
+	settings.setValue("Send/Ascii", ui.AsciiButton_2->isChecked());
+	settings.setValue("Send/Hex", ui.HexButton_2->isChecked());
+	settings.setValue("Send/Send", ui.sendCheckBox->isChecked());
+	settings.setValue("Send/Timespin", ui.timespinBox->text());
+}
+
 void MainWindow::SetStatusBar()
 {
 	receiveLabel = new QLabel("Rx：0 Bytes");
@@ -28,6 +53,29 @@ void MainWindow::SetStatusBar()
 	sendLabel = new QLabel("Tx：0 Bytes");
 	sendLabel->setFixedWidth(200);
 	ui.statusBar->addPermanentWidget(sendLabel); //现实永久信息
+}
+
+void MainWindow::SetCurrent()
+{
+	QString iniFilePath = "./ini/self.ini";
+	QSettings settings(iniFilePath, QSettings::IniFormat);
+
+	ui.baudrateComboBox->setCurrentIndex(settings.value("SerialSetting/Baudrate").toInt());
+	ui.databitComboBox->setCurrentIndex(settings.value("SerialSetting/Databit").toInt());
+	ui.checkbitComboBox->setCurrentIndex(settings.value("SerialSetting/Checkbit").toInt());
+	ui.stopbitComboBox->setCurrentIndex(settings.value("SerialSetting/Stopbit").toInt());
+	ui.flowcontrolComboBox->setCurrentIndex(settings.value("SerialSetting/Flowcontrol").toInt());
+
+	ui.AsciiButton_1->setChecked(settings.value("Receive/Ascii").toBool());
+	ui.HexButton_1->setChecked(settings.value("Receive/Hex").toBool());
+	ui.AutocheckBox->setChecked(settings.value("Receive/Auto").toBool());
+	ui.ShowsendcheckBox->setChecked(settings.value("Receive/Showsend").toBool());
+	ui.ShowtimecheckBox->setChecked(settings.value("Receive/Showtime").toBool());
+
+	ui.AsciiButton_2->setChecked(settings.value("Send/Ascii").toBool());
+	ui.HexButton_2->setChecked(settings.value("Send/Hex").toBool());
+	ui.sendCheckBox->setChecked(settings.value("Send/Send").toBool());
+	ui.timespinBox->setValue(settings.value("Send/Timespin").toInt());
 }
 
 void MainWindow::CreateSignal()
@@ -375,7 +423,7 @@ void MainWindow::ShowData()
 	ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
 	totalReceive += showdata.length();
 	receiveLabel->setText("Rx：" + QString::number(totalReceive, 10) + " Bytes");
-	if (log.isLog)
+	if (log.IsLog())
 	{
 		qDebug() << "isopen";
 		QFile file(log.getFileName());//文件命名  

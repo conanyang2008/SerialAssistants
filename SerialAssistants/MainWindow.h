@@ -22,7 +22,7 @@ class MainWindow : public QMainWindow
 
 public:
 	MainWindow(QWidget *parent = Q_NULLPTR);
-
+	~MainWindow();
 private:
 	Ui::MainWindowClass ui;
 	AboutDialog aboutDialog;
@@ -35,6 +35,7 @@ private:
 	void CreateSignal();
 	void CreateActions();
 	void SetStatusBar();
+	void SetCurrent();
 	QTime currentTime;
 	QTimer *sendTimer;
 private slots:

@@ -10,13 +10,13 @@ class Log : public QDialog
 	Q_OBJECT
 public:
 	Log(QWidget *parent = Q_NULLPTR);
-	bool isLog;
+	~Log();
+	bool IsLog();
 	QString getFileName();
 private:
 	Ui::Dialog ui_log;
-
+	void SetCurrent();
 	private slots:
 	void Close();
 	bool OpenPath();
-	void IsLog();
 };
