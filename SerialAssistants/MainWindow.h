@@ -32,25 +32,27 @@ private:
 	QLabel *sendLabel, *receiveLabel;
 	QPalette pa1, pa2;
 	int totalSend, totalReceive;
-	void CreateSignal();
 	void CreateActions();
 	void SetStatusBar();
 	void SetCurrent();
+	void SetSerial();			//设置串口参数
+	void SetSerialEnabled(bool);
 	QTime currentTime;
 	QTimer *sendTimer;
 private slots:
-	void ShowAboutDialog();	//显示about dialog
-	void ShowLogDialog();
-	void CloseWindow();		//关闭主窗口
-	void SearchPort();		//寻找串口
-	void SetSerial();			//设置串口参数
+	void on_aboutAction_triggered();	//显示about dialog
+	void on_saveAction_triggered();
+	void on_quitAction_triggered();		//关闭主窗口
+	void on_action_triggered();		//寻找串口
 	void ShowAlignment(QAction*);   //开始暂停or关闭
-	void SendData();
+	void on_SendButton_clicked();
+	void on_clearAction_triggered();
+	void on_sendCheckBox_clicked(bool);
+	void on_timespinBox_valueChanged(int);
+	void on_comboBox_currentIndexChanged();
+
+
 	void ShowData();
-	void Clear();
 	void StringToHex(QString str, QByteArray &senddata);
 	char ConvertHexChar(char ch);
-	void AutoSend(bool);
-	void ChangeSendTime(int);
-	void SendTextChange();
 };

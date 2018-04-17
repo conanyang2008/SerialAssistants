@@ -10,16 +10,16 @@ MainWindow::MainWindow(QWidget *parent)
 {	
 	ui.setupUi(this);
 	setWindowIcon(QIcon("./image/globe.png"));
-	SetCurrent();
-	my_serial = new QSerialPort(this);
-	currentTime = QTime::currentTime();
-	sendTimer = new QTimer(this);
+	SetCurrent();									//读取配置文件信息
+	my_serial = new QSerialPort(this);				//new串口信息对象
+	currentTime = QTime::currentTime();				//当前时间
+	sendTimer = new QTimer(this);					//创建定时器
 	CreateActions();
-	SearchPort();//启动搜索端口号
-	SetSerial();
-	SetStatusBar();
-	CreateSignal();
-
+	on_action_triggered();							//启动搜索端口号
+	//SetSerial();
+	SetStatusBar();									//设置底部状态栏
+	connect(my_serial, SIGNAL(readyRead()), this, SLOT(ShowData()));
+	connect(sendTimer, SIGNAL(timeout()), this, SLOT(on_SendButton_clicked()));
 }
 
 MainWindow::~MainWindow()
@@ -45,6 +45,7 @@ MainWindow::~MainWindow()
 	settings.setValue("Send/Timespin", ui.timespinBox->text());
 }
 
+//设置状态栏控件
 void MainWindow::SetStatusBar()
 {
 	receiveLabel = new QLabel("Rx：0 Bytes");
@@ -78,21 +79,7 @@ void MainWindow::SetCurrent()
 	ui.timespinBox->setValue(settings.value("Send/Timespin").toInt());
 }
 
-void MainWindow::CreateSignal()
-{
-	connect(ui.aboutAction, SIGNAL(triggered()), this, SLOT(ShowAboutDialog()));//显示相关信息Dialog 
-	connect(ui.quitAction, SIGNAL(triggered()), this, SLOT(CloseWindow()));		//关闭窗口
-	connect(ui.action, SIGNAL(triggered()), this, SLOT(SearchPort()));			//按下刷新按钮刷新端口
-	connect(ui.SendButton, SIGNAL(clicked()), this, SLOT(SendData()));
-	connect(ui.clearAction, SIGNAL(triggered()), this, SLOT(Clear()));
-	connect(my_serial, SIGNAL(readyRead()), this, SLOT(ShowData()));
-	connect(sendTimer, SIGNAL(timeout()), this, SLOT(SendData()));
-	connect(ui.sendCheckBox, SIGNAL(clicked(bool)), this, SLOT(AutoSend(bool)));
-	connect(ui.timespinBox, SIGNAL(valueChanged(int)), this, SLOT(ChangeSendTime(int)));
-	connect(ui.comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(SendTextChange()));
-	connect(ui.saveAction, SIGNAL(triggered()), this, SLOT(ShowLogDialog()));
-}
-
+//开始暂停关闭按钮设成同一个组
 void MainWindow::CreateActions()
 {
 	switchgroup = new QActionGroup(this);
@@ -102,23 +89,38 @@ void MainWindow::CreateActions()
 	connect(switchgroup, SIGNAL(triggered(QAction*)), this, SLOT(ShowAlignment(QAction*)));
 }
 
-void MainWindow::ShowAboutDialog()
+//设置串口参数选中状态
+void MainWindow::SetSerialEnabled(bool state)
+{
+	ui.SerialComboBox->setEnabled(state);
+	ui.baudrateComboBox->setEnabled(state);
+	ui.checkbitComboBox->setEnabled(state);
+	ui.databitComboBox->setEnabled(state);
+	ui.flowcontrolComboBox->setEnabled(state);
+	ui.stopbitComboBox->setEnabled(state);
+}
+
+//显示版本相关信息
+void MainWindow::on_aboutAction_triggered()
 {
 	aboutDialog.setModal(true);
 	aboutDialog.show();
 }
 
-void MainWindow::ShowLogDialog()
+//保存log相关信息dialog
+void MainWindow::on_saveAction_triggered()
 {
 	log.show();
 }
 
-void MainWindow::CloseWindow()
+//退出按钮按下时关闭窗口
+void MainWindow::on_quitAction_triggered()
 {
 	this->close();
 }
 
-void MainWindow::SearchPort()
+//搜索串口槽函数
+void MainWindow::on_action_triggered()
 {
 	ui.SerialComboBox->clear();
 	foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
@@ -135,6 +137,7 @@ void MainWindow::SearchPort()
 	}
 }
 
+//设置串口信息
 void MainWindow::SetSerial()
 {
 	/*设置端口号*/
@@ -254,6 +257,7 @@ void MainWindow::SetSerial()
 	my_serial->clear();
 }
 
+//开始暂停关闭按钮槽函数
 void MainWindow::ShowAlignment(QAction* act)
 {
 	if (act == ui.startAction)
@@ -266,6 +270,7 @@ void MainWindow::ShowAlignment(QAction* act)
 			bool com = my_serial->open(QIODevice::ReadWrite);
 			if (com)
 			{
+				SetSerialEnabled(false);
 				ui.statusBar->setStyleSheet("QStatusBar{ color:green }");
 				ui.statusBar->showMessage(my_serial->portName() + " 打开成功");
 			}
@@ -292,13 +297,15 @@ void MainWindow::ShowAlignment(QAction* act)
 		if (my_serial->isOpen())
 		{
 			my_serial->close();
+			SetSerialEnabled(true);
 			ui.statusBar->setStyleSheet("QStatusBar{ color:red }");
 			ui.statusBar->showMessage(my_serial->portName() + " 已关闭", 3000);
 		}
 	}
 }
 
-void MainWindow::SendData()
+//发送信息槽函数
+void MainWindow::on_SendButton_clicked()
 {
 	if (my_serial->isOpen())
 	{
@@ -391,6 +398,7 @@ void MainWindow::SendData()
 	}
 }
 
+//显示接收到的信息槽函数
 void MainWindow::ShowData()
 {
 	//qDebug() << "11111";
@@ -438,7 +446,8 @@ void MainWindow::ShowData()
 	}
 }
 
-void MainWindow::AutoSend(bool state)
+//定时重发ON/OFF
+void MainWindow::on_sendCheckBox_clicked(bool state)
 {
 	qDebug() << "111";
 	if(state)
@@ -451,7 +460,8 @@ void MainWindow::AutoSend(bool state)
 	}
 }
 
-void MainWindow::ChangeSendTime(int value)
+//定时重发间隔时间改变时，改变定时器的时间间隔
+void MainWindow::on_timespinBox_valueChanged(int value)
 {
 	qDebug() << "2212";
 	if (ui.sendCheckBox->isChecked())
@@ -461,12 +471,14 @@ void MainWindow::ChangeSendTime(int value)
 		
 }
 
-void MainWindow::SendTextChange()
+//选择历史发送记录，并填充到发送TextEdit中
+void MainWindow::on_comboBox_currentIndexChanged()
 {
 	ui.SendTextEdit->setText(ui.comboBox->currentText());
 }
 
-void MainWindow::Clear()
+//清空按钮按下时，清除receive textedit中的内容及计数
+void MainWindow::on_clearAction_triggered()
 {
 	ui.ReceiveTextEdit->clear();
 	totalSend = 0;
