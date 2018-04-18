@@ -50,7 +50,7 @@ private slots:
 	void on_sendCheckBox_clicked(bool);
 	void on_timespinBox_valueChanged(int);
 	void on_comboBox_currentIndexChanged();
-
+	void on_SerialComboBox_currentIndexChanged();
 
 	void ShowData();
 	void StringToHex(QString str, QByteArray &senddata);

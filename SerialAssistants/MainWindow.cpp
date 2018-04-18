@@ -98,6 +98,7 @@ void MainWindow::SetSerialEnabled(bool state)
 	ui.databitComboBox->setEnabled(state);
 	ui.flowcontrolComboBox->setEnabled(state);
 	ui.stopbitComboBox->setEnabled(state);
+	ui.action->setEnabled(state); 
 }
 
 //显示版本相关信息
@@ -134,6 +135,20 @@ void MainWindow::on_action_triggered()
 		{
 			ui.SerialComboBox->addItem(info.description() + "(" + info.portName() + ")");
 		}
+	}
+	ui.SerialComboBox->addItem(tr("TCP Server"));
+	ui.SerialComboBox->addItem(tr("TCP Client"));
+	ui.SerialComboBox->addItem(tr("UDP"));
+}
+
+void MainWindow::on_SerialComboBox_currentIndexChanged()
+{
+	QString name = ui.SerialComboBox->currentText();
+	if (name == "TCP Server")
+	{	
+		//ui.verticalLayout->removeWidget(ui.baudrateLabel);
+		//delete ui.baudrateLabel;
+		//ui.verticalLayout_2->removeWidget(ui.baudrateComboBox);
 	}
 }
 
@@ -277,7 +292,7 @@ void MainWindow::ShowAlignment(QAction* act)
 			else
 			{
 				ui.statusBar->setStyleSheet("QStatusBar{ color:red }");
-				ui.statusBar->showMessage(my_serial->portName() + " 打开失败");
+				ui.statusBar->showMessage(my_serial->portName() + " 打开失败", 3000);
 			}
 		}
 	}

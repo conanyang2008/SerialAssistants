@@ -50,7 +50,7 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QVBoxLayout *verticalLayout_4;
     QGroupBox *SerialSettingGroupBox;
-    QWidget *layoutWidget;
+    QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
     QLabel *SerialLabel;
@@ -67,22 +67,23 @@ public:
     QComboBox *checkbitComboBox;
     QComboBox *stopbitComboBox;
     QComboBox *flowcontrolComboBox;
+    QSpacerItem *verticalSpacer_2;
     QGroupBox *ReceiveSettingGroupBox;
-    QWidget *layoutWidget1;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout_2;
     QRadioButton *AsciiButton_1;
     QRadioButton *HexButton_1;
-    QWidget *layoutWidget2;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_3;
     QCheckBox *AutocheckBox;
     QCheckBox *ShowsendcheckBox;
     QCheckBox *ShowtimecheckBox;
     QGroupBox *SendSettingGroupBox;
-    QWidget *layoutWidget3;
+    QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout_3;
     QRadioButton *AsciiButton_2;
     QRadioButton *HexButton_2;
-    QWidget *layoutWidget4;
+    QWidget *layoutWidget3;
     QHBoxLayout *horizontalLayout_4;
     QCheckBox *sendCheckBox;
     QSpinBox *timespinBox;
@@ -103,7 +104,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(900, 601);
+        MainWindowClass->resize(800, 601);
         MainWindowClass->setMinimumSize(QSize(800, 600));
         MainWindowClass->setMaximumSize(QSize(16777215, 16777215));
         saveAction = new QAction(MainWindowClass);
@@ -164,48 +165,47 @@ public:
         SerialSettingGroupBox->setObjectName(QStringLiteral("SerialSettingGroupBox"));
         SerialSettingGroupBox->setMinimumSize(QSize(219, 220));
         SerialSettingGroupBox->setMaximumSize(QSize(219, 220));
-        layoutWidget = new QWidget(SerialSettingGroupBox);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(13, 30, 198, 174));
-        horizontalLayout = new QHBoxLayout(layoutWidget);
+        verticalLayout_5 = new QVBoxLayout(SerialSettingGroupBox);
+        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(2);
-        horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(10);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        SerialLabel = new QLabel(layoutWidget);
+        SerialLabel = new QLabel(SerialSettingGroupBox);
         SerialLabel->setObjectName(QStringLiteral("SerialLabel"));
         SerialLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(SerialLabel);
 
-        baudrateLabel = new QLabel(layoutWidget);
+        baudrateLabel = new QLabel(SerialSettingGroupBox);
         baudrateLabel->setObjectName(QStringLiteral("baudrateLabel"));
         baudrateLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(baudrateLabel);
 
-        databitLabel = new QLabel(layoutWidget);
+        databitLabel = new QLabel(SerialSettingGroupBox);
         databitLabel->setObjectName(QStringLiteral("databitLabel"));
         databitLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(databitLabel);
 
-        checkbitLabel = new QLabel(layoutWidget);
+        checkbitLabel = new QLabel(SerialSettingGroupBox);
         checkbitLabel->setObjectName(QStringLiteral("checkbitLabel"));
         checkbitLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(checkbitLabel);
 
-        stopbitLabel = new QLabel(layoutWidget);
+        stopbitLabel = new QLabel(SerialSettingGroupBox);
         stopbitLabel->setObjectName(QStringLiteral("stopbitLabel"));
         stopbitLabel->setMinimumSize(QSize(35, 20));
 
         verticalLayout->addWidget(stopbitLabel);
 
-        flowcontrolLabel = new QLabel(layoutWidget);
+        flowcontrolLabel = new QLabel(SerialSettingGroupBox);
         flowcontrolLabel->setObjectName(QStringLiteral("flowcontrolLabel"));
         flowcontrolLabel->setMinimumSize(QSize(35, 20));
 
@@ -221,37 +221,37 @@ public:
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(10);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        SerialComboBox = new QComboBox(layoutWidget);
+        SerialComboBox = new QComboBox(SerialSettingGroupBox);
         SerialComboBox->setObjectName(QStringLiteral("SerialComboBox"));
         SerialComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(SerialComboBox);
 
-        baudrateComboBox = new QComboBox(layoutWidget);
+        baudrateComboBox = new QComboBox(SerialSettingGroupBox);
         baudrateComboBox->setObjectName(QStringLiteral("baudrateComboBox"));
         baudrateComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(baudrateComboBox);
 
-        databitComboBox = new QComboBox(layoutWidget);
+        databitComboBox = new QComboBox(SerialSettingGroupBox);
         databitComboBox->setObjectName(QStringLiteral("databitComboBox"));
         databitComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(databitComboBox);
 
-        checkbitComboBox = new QComboBox(layoutWidget);
+        checkbitComboBox = new QComboBox(SerialSettingGroupBox);
         checkbitComboBox->setObjectName(QStringLiteral("checkbitComboBox"));
         checkbitComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(checkbitComboBox);
 
-        stopbitComboBox = new QComboBox(layoutWidget);
+        stopbitComboBox = new QComboBox(SerialSettingGroupBox);
         stopbitComboBox->setObjectName(QStringLiteral("stopbitComboBox"));
         stopbitComboBox->setMinimumSize(QSize(150, 20));
 
         verticalLayout_2->addWidget(stopbitComboBox);
 
-        flowcontrolComboBox = new QComboBox(layoutWidget);
+        flowcontrolComboBox = new QComboBox(SerialSettingGroupBox);
         flowcontrolComboBox->setObjectName(QStringLiteral("flowcontrolComboBox"));
         flowcontrolComboBox->setMinimumSize(QSize(150, 20));
 
@@ -261,27 +261,34 @@ public:
         horizontalLayout->addLayout(verticalLayout_2);
 
 
+        verticalLayout_5->addLayout(horizontalLayout);
+
+        verticalSpacer_2 = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_5->addItem(verticalSpacer_2);
+
+
         verticalLayout_4->addWidget(SerialSettingGroupBox);
 
         ReceiveSettingGroupBox = new QGroupBox(centralWidget);
         ReceiveSettingGroupBox->setObjectName(QStringLiteral("ReceiveSettingGroupBox"));
         ReceiveSettingGroupBox->setMinimumSize(QSize(219, 135));
         ReceiveSettingGroupBox->setMaximumSize(QSize(219, 135));
-        layoutWidget1 = new QWidget(ReceiveSettingGroupBox);
-        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(11, 21, 148, 22));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget1);
+        layoutWidget = new QWidget(ReceiveSettingGroupBox);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(11, 21, 148, 22));
+        horizontalLayout_2 = new QHBoxLayout(layoutWidget);
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        AsciiButton_1 = new QRadioButton(layoutWidget1);
+        AsciiButton_1 = new QRadioButton(layoutWidget);
         AsciiButton_1->setObjectName(QStringLiteral("AsciiButton_1"));
         AsciiButton_1->setMinimumSize(QSize(70, 20));
 
         horizontalLayout_2->addWidget(AsciiButton_1);
 
-        HexButton_1 = new QRadioButton(layoutWidget1);
+        HexButton_1 = new QRadioButton(layoutWidget);
         HexButton_1->setObjectName(QStringLiteral("HexButton_1"));
         HexButton_1->setMinimumSize(QSize(70, 20));
         HexButton_1->setTabletTracking(false);
@@ -289,27 +296,27 @@ public:
 
         horizontalLayout_2->addWidget(HexButton_1);
 
-        layoutWidget2 = new QWidget(ReceiveSettingGroupBox);
-        layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(10, 50, 73, 74));
-        verticalLayout_3 = new QVBoxLayout(layoutWidget2);
+        layoutWidget1 = new QWidget(ReceiveSettingGroupBox);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(10, 50, 73, 74));
+        verticalLayout_3 = new QVBoxLayout(layoutWidget1);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(0, 0, 0, 0);
-        AutocheckBox = new QCheckBox(layoutWidget2);
+        AutocheckBox = new QCheckBox(layoutWidget1);
         AutocheckBox->setObjectName(QStringLiteral("AutocheckBox"));
         AutocheckBox->setMinimumSize(QSize(70, 20));
 
         verticalLayout_3->addWidget(AutocheckBox);
 
-        ShowsendcheckBox = new QCheckBox(layoutWidget2);
+        ShowsendcheckBox = new QCheckBox(layoutWidget1);
         ShowsendcheckBox->setObjectName(QStringLiteral("ShowsendcheckBox"));
         ShowsendcheckBox->setMinimumSize(QSize(70, 20));
 
         verticalLayout_3->addWidget(ShowsendcheckBox);
 
-        ShowtimecheckBox = new QCheckBox(layoutWidget2);
+        ShowtimecheckBox = new QCheckBox(layoutWidget1);
         ShowtimecheckBox->setObjectName(QStringLiteral("ShowtimecheckBox"));
         ShowtimecheckBox->setMinimumSize(QSize(70, 20));
 
@@ -322,42 +329,42 @@ public:
         SendSettingGroupBox->setObjectName(QStringLiteral("SendSettingGroupBox"));
         SendSettingGroupBox->setMinimumSize(QSize(219, 85));
         SendSettingGroupBox->setMaximumSize(QSize(219, 85));
-        layoutWidget3 = new QWidget(SendSettingGroupBox);
-        layoutWidget3->setObjectName(QStringLiteral("layoutWidget3"));
-        layoutWidget3->setGeometry(QRect(10, 20, 148, 22));
-        horizontalLayout_3 = new QHBoxLayout(layoutWidget3);
+        layoutWidget2 = new QWidget(SendSettingGroupBox);
+        layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(10, 20, 148, 22));
+        horizontalLayout_3 = new QHBoxLayout(layoutWidget2);
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        AsciiButton_2 = new QRadioButton(layoutWidget3);
+        AsciiButton_2 = new QRadioButton(layoutWidget2);
         AsciiButton_2->setObjectName(QStringLiteral("AsciiButton_2"));
         AsciiButton_2->setMinimumSize(QSize(70, 20));
 
         horizontalLayout_3->addWidget(AsciiButton_2);
 
-        HexButton_2 = new QRadioButton(layoutWidget3);
+        HexButton_2 = new QRadioButton(layoutWidget2);
         HexButton_2->setObjectName(QStringLiteral("HexButton_2"));
         HexButton_2->setMinimumSize(QSize(70, 20));
         HexButton_2->setChecked(true);
 
         horizontalLayout_3->addWidget(HexButton_2);
 
-        layoutWidget4 = new QWidget(SendSettingGroupBox);
-        layoutWidget4->setObjectName(QStringLiteral("layoutWidget4"));
-        layoutWidget4->setGeometry(QRect(10, 50, 159, 22));
-        horizontalLayout_4 = new QHBoxLayout(layoutWidget4);
+        layoutWidget3 = new QWidget(SendSettingGroupBox);
+        layoutWidget3->setObjectName(QStringLiteral("layoutWidget3"));
+        layoutWidget3->setGeometry(QRect(10, 50, 159, 22));
+        horizontalLayout_4 = new QHBoxLayout(layoutWidget3);
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
-        sendCheckBox = new QCheckBox(layoutWidget4);
+        sendCheckBox = new QCheckBox(layoutWidget3);
         sendCheckBox->setObjectName(QStringLiteral("sendCheckBox"));
         sendCheckBox->setMinimumSize(QSize(70, 20));
 
         horizontalLayout_4->addWidget(sendCheckBox);
 
-        timespinBox = new QSpinBox(layoutWidget4);
+        timespinBox = new QSpinBox(layoutWidget3);
         timespinBox->setObjectName(QStringLiteral("timespinBox"));
         timespinBox->setMinimumSize(QSize(80, 20));
         timespinBox->setMinimum(10);
@@ -439,7 +446,7 @@ public:
         MainWindowClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 900, 23));
+        menuBar->setGeometry(QRect(0, 0, 800, 23));
         fileMenu = new QMenu(menuBar);
         fileMenu->setObjectName(QStringLiteral("fileMenu"));
         editMenu = new QMenu(menuBar);
