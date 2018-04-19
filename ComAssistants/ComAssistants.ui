@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>803</width>
+    <width>875</width>
     <height>616</height>
    </rect>
   </property>
@@ -39,7 +39,7 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>300</width>
+                <width>176</width>
                 <height>220</height>
                </size>
               </property>
@@ -360,7 +360,7 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="maximumSize">
                <size>
-                <width>219</width>
+                <width>176</width>
                 <height>135</height>
                </size>
               </property>
@@ -452,7 +452,7 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="maximumSize">
                <size>
-                <width>219</width>
+                <width>176</width>
                 <height>200</height>
                </size>
               </property>
@@ -810,7 +810,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>803</width>
+     <width>875</width>
      <height>23</height>
     </rect>
    </property>

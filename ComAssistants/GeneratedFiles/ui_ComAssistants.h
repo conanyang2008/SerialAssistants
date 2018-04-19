@@ -108,7 +108,7 @@ public:
     {
         if (ComAssistantsClass->objectName().isEmpty())
             ComAssistantsClass->setObjectName(QStringLiteral("ComAssistantsClass"));
-        ComAssistantsClass->resize(803, 616);
+        ComAssistantsClass->resize(875, 616);
         action = new QAction(ComAssistantsClass);
         action->setObjectName(QStringLiteral("action"));
         centralWidget = new QWidget(ComAssistantsClass);
@@ -134,7 +134,7 @@ public:
         SerialSettingGroupBox = new QGroupBox(serialTab);
         SerialSettingGroupBox->setObjectName(QStringLiteral("SerialSettingGroupBox"));
         SerialSettingGroupBox->setMinimumSize(QSize(100, 100));
-        SerialSettingGroupBox->setMaximumSize(QSize(300, 220));
+        SerialSettingGroupBox->setMaximumSize(QSize(176, 220));
         gridLayout_6 = new QGridLayout(SerialSettingGroupBox);
         gridLayout_6->setSpacing(6);
         gridLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -247,7 +247,7 @@ public:
         ReceiveSettingGroupBox = new QGroupBox(serialTab);
         ReceiveSettingGroupBox->setObjectName(QStringLiteral("ReceiveSettingGroupBox"));
         ReceiveSettingGroupBox->setMinimumSize(QSize(100, 20));
-        ReceiveSettingGroupBox->setMaximumSize(QSize(219, 135));
+        ReceiveSettingGroupBox->setMaximumSize(QSize(176, 135));
         gridLayout_5 = new QGridLayout(ReceiveSettingGroupBox);
         gridLayout_5->setSpacing(6);
         gridLayout_5->setContentsMargins(11, 11, 11, 11);
@@ -290,7 +290,7 @@ public:
         SendSettingGroupBox = new QGroupBox(serialTab);
         SendSettingGroupBox->setObjectName(QStringLiteral("SendSettingGroupBox"));
         SendSettingGroupBox->setMinimumSize(QSize(100, 50));
-        SendSettingGroupBox->setMaximumSize(QSize(219, 200));
+        SendSettingGroupBox->setMaximumSize(QSize(176, 200));
         gridLayout_4 = new QGridLayout(SendSettingGroupBox);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -482,7 +482,7 @@ public:
         ComAssistantsClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ComAssistantsClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 803, 23));
+        menuBar->setGeometry(QRect(0, 0, 875, 23));
         ComAssistantsClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(ComAssistantsClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
