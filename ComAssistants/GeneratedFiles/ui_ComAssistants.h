@@ -21,6 +21,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -41,7 +42,7 @@ class Ui_ComAssistantsClass
 public:
     QAction *action;
     QWidget *centralWidget;
-    QGridLayout *gridLayout;
+    QVBoxLayout *verticalLayout_10;
     QTabWidget *tabWidget;
     QWidget *serialTab;
     QVBoxLayout *verticalLayout_4;
@@ -100,6 +101,72 @@ public:
     QPushButton *sendButton1;
     QWidget *serverTab;
     QWidget *clientTab;
+    QVBoxLayout *verticalLayout_15;
+    QHBoxLayout *horizontalLayout_8;
+    QVBoxLayout *verticalLayout_8;
+    QGroupBox *serverIPBOX;
+    QVBoxLayout *verticalLayout;
+    QLineEdit *lineEdit;
+    QHBoxLayout *horizontalLayout_4;
+    QPushButton *pingButton;
+    QSpacerItem *horizontalSpacer_2;
+    QGroupBox *tcpClientBox;
+    QVBoxLayout *verticalLayout_5;
+    QGridLayout *gridLayout_8;
+    QLabel *tcpLocalLabel;
+    QLineEdit *tcpPort1;
+    QLabel *tcpTargetLabel;
+    QLineEdit *tcpPort2;
+    QGroupBox *udpBox;
+    QVBoxLayout *verticalLayout_6;
+    QGridLayout *gridLayout_9;
+    QLabel *udpLocalLabel;
+    QLineEdit *udpPort1;
+    QLabel *udpTargetLabel;
+    QLineEdit *udpPort2;
+    QGroupBox *tcpClientAssistBox;
+    QVBoxLayout *verticalLayout_7;
+    QGridLayout *gridLayout_11;
+    QLabel *tcpStatus;
+    QPushButton *openTcpClient;
+    QCheckBox *clientHexSend;
+    QLabel *udpStatus;
+    QPushButton *openUdp;
+    QCheckBox *clientHexRev;
+    QGridLayout *gridLayout_10;
+    QCheckBox *checkBox_6;
+    QPushButton *clearUdp;
+    QPushButton *clearTcpClient;
+    QCheckBox *checkBox_4;
+    QCheckBox *checkBox_5;
+    QCheckBox *checkBox_3;
+    QSpinBox *tcpClientspinBox;
+    QSpinBox *udpspinBox;
+    QSpacerItem *verticalSpacer_2;
+    QVBoxLayout *verticalLayout_14;
+    QGroupBox *tcpClientRevBox;
+    QVBoxLayout *verticalLayout_11;
+    QVBoxLayout *verticalLayout_9;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *tcpCRevLabel;
+    QLabel *tcpCSendLabel;
+    QSpacerItem *horizontalSpacer_3;
+    QTextEdit *tcpClientRevtextEdit;
+    QHBoxLayout *horizontalLayout_6;
+    QLabel *udpRevLabel;
+    QLabel *udpSendLabel;
+    QSpacerItem *horizontalSpacer_4;
+    QTextEdit *udpRevtextEdit;
+    QGroupBox *tcpClientSendBox;
+    QVBoxLayout *verticalLayout_13;
+    QVBoxLayout *verticalLayout_12;
+    QTextEdit *tcpClientSendtextEdit;
+    QComboBox *tcpCLastSendComboBox;
+    QHBoxLayout *horizontalLayout_7;
+    QSpacerItem *horizontalSpacer_5;
+    QPushButton *tcpClientSendButton;
+    QPushButton *udpSendButton;
+    QPushButton *pushButton_7;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -108,15 +175,15 @@ public:
     {
         if (ComAssistantsClass->objectName().isEmpty())
             ComAssistantsClass->setObjectName(QStringLiteral("ComAssistantsClass"));
-        ComAssistantsClass->resize(875, 616);
+        ComAssistantsClass->resize(877, 626);
         action = new QAction(ComAssistantsClass);
         action->setObjectName(QStringLiteral("action"));
         centralWidget = new QWidget(ComAssistantsClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        gridLayout = new QGridLayout(centralWidget);
-        gridLayout->setSpacing(6);
-        gridLayout->setContentsMargins(11, 11, 11, 11);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        verticalLayout_10 = new QVBoxLayout(centralWidget);
+        verticalLayout_10->setSpacing(6);
+        verticalLayout_10->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_10->setObjectName(QStringLiteral("verticalLayout_10"));
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         serialTab = new QWidget();
@@ -406,7 +473,7 @@ public:
         SendTextEdit = new QTextEdit(groupBoxSend);
         SendTextEdit->setObjectName(QStringLiteral("SendTextEdit"));
         SendTextEdit->setMinimumSize(QSize(300, 63));
-        SendTextEdit->setMaximumSize(QSize(16777215, 50));
+        SendTextEdit->setMaximumSize(QSize(16777215, 70));
         SendTextEdit->setFont(font);
 
         gridLayout_7->addWidget(SendTextEdit, 0, 0, 1, 1);
@@ -475,14 +542,386 @@ public:
         tabWidget->addTab(serverTab, QString());
         clientTab = new QWidget();
         clientTab->setObjectName(QStringLiteral("clientTab"));
+        verticalLayout_15 = new QVBoxLayout(clientTab);
+        verticalLayout_15->setSpacing(6);
+        verticalLayout_15->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_15->setObjectName(QStringLiteral("verticalLayout_15"));
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setSpacing(6);
+        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
+        verticalLayout_8 = new QVBoxLayout();
+        verticalLayout_8->setSpacing(6);
+        verticalLayout_8->setObjectName(QStringLiteral("verticalLayout_8"));
+        serverIPBOX = new QGroupBox(clientTab);
+        serverIPBOX->setObjectName(QStringLiteral("serverIPBOX"));
+        serverIPBOX->setMinimumSize(QSize(176, 0));
+        serverIPBOX->setMaximumSize(QSize(176, 16777215));
+        verticalLayout = new QVBoxLayout(serverIPBOX);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        lineEdit = new QLineEdit(serverIPBOX);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setMaximumSize(QSize(176, 16777215));
+
+        verticalLayout->addWidget(lineEdit);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        pingButton = new QPushButton(serverIPBOX);
+        pingButton->setObjectName(QStringLiteral("pingButton"));
+
+        horizontalLayout_4->addWidget(pingButton);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_2);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
+
+
+        verticalLayout_8->addWidget(serverIPBOX);
+
+        tcpClientBox = new QGroupBox(clientTab);
+        tcpClientBox->setObjectName(QStringLiteral("tcpClientBox"));
+        tcpClientBox->setMinimumSize(QSize(176, 0));
+        tcpClientBox->setMaximumSize(QSize(176, 16777215));
+        verticalLayout_5 = new QVBoxLayout(tcpClientBox);
+        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        gridLayout_8 = new QGridLayout();
+        gridLayout_8->setSpacing(6);
+        gridLayout_8->setObjectName(QStringLiteral("gridLayout_8"));
+        tcpLocalLabel = new QLabel(tcpClientBox);
+        tcpLocalLabel->setObjectName(QStringLiteral("tcpLocalLabel"));
+
+        gridLayout_8->addWidget(tcpLocalLabel, 0, 0, 1, 1);
+
+        tcpPort1 = new QLineEdit(tcpClientBox);
+        tcpPort1->setObjectName(QStringLiteral("tcpPort1"));
+        tcpPort1->setReadOnly(true);
+
+        gridLayout_8->addWidget(tcpPort1, 0, 1, 1, 1);
+
+        tcpTargetLabel = new QLabel(tcpClientBox);
+        tcpTargetLabel->setObjectName(QStringLiteral("tcpTargetLabel"));
+
+        gridLayout_8->addWidget(tcpTargetLabel, 1, 0, 1, 1);
+
+        tcpPort2 = new QLineEdit(tcpClientBox);
+        tcpPort2->setObjectName(QStringLiteral("tcpPort2"));
+
+        gridLayout_8->addWidget(tcpPort2, 1, 1, 1, 1);
+
+
+        verticalLayout_5->addLayout(gridLayout_8);
+
+
+        verticalLayout_8->addWidget(tcpClientBox);
+
+        udpBox = new QGroupBox(clientTab);
+        udpBox->setObjectName(QStringLiteral("udpBox"));
+        udpBox->setMinimumSize(QSize(176, 0));
+        udpBox->setMaximumSize(QSize(176, 16777215));
+        verticalLayout_6 = new QVBoxLayout(udpBox);
+        verticalLayout_6->setSpacing(6);
+        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
+        gridLayout_9 = new QGridLayout();
+        gridLayout_9->setSpacing(6);
+        gridLayout_9->setObjectName(QStringLiteral("gridLayout_9"));
+        udpLocalLabel = new QLabel(udpBox);
+        udpLocalLabel->setObjectName(QStringLiteral("udpLocalLabel"));
+
+        gridLayout_9->addWidget(udpLocalLabel, 0, 0, 1, 1);
+
+        udpPort1 = new QLineEdit(udpBox);
+        udpPort1->setObjectName(QStringLiteral("udpPort1"));
+
+        gridLayout_9->addWidget(udpPort1, 0, 1, 1, 1);
+
+        udpTargetLabel = new QLabel(udpBox);
+        udpTargetLabel->setObjectName(QStringLiteral("udpTargetLabel"));
+
+        gridLayout_9->addWidget(udpTargetLabel, 1, 0, 1, 1);
+
+        udpPort2 = new QLineEdit(udpBox);
+        udpPort2->setObjectName(QStringLiteral("udpPort2"));
+
+        gridLayout_9->addWidget(udpPort2, 1, 1, 1, 1);
+
+
+        verticalLayout_6->addLayout(gridLayout_9);
+
+
+        verticalLayout_8->addWidget(udpBox);
+
+        tcpClientAssistBox = new QGroupBox(clientTab);
+        tcpClientAssistBox->setObjectName(QStringLiteral("tcpClientAssistBox"));
+        tcpClientAssistBox->setMinimumSize(QSize(176, 0));
+        tcpClientAssistBox->setMaximumSize(QSize(176, 16777215));
+        verticalLayout_7 = new QVBoxLayout(tcpClientAssistBox);
+        verticalLayout_7->setSpacing(6);
+        verticalLayout_7->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
+        gridLayout_11 = new QGridLayout();
+        gridLayout_11->setSpacing(6);
+        gridLayout_11->setObjectName(QStringLiteral("gridLayout_11"));
+        tcpStatus = new QLabel(tcpClientAssistBox);
+        tcpStatus->setObjectName(QStringLiteral("tcpStatus"));
+
+        gridLayout_11->addWidget(tcpStatus, 0, 0, 1, 1);
+
+        openTcpClient = new QPushButton(tcpClientAssistBox);
+        openTcpClient->setObjectName(QStringLiteral("openTcpClient"));
+
+        gridLayout_11->addWidget(openTcpClient, 0, 1, 1, 1);
+
+        clientHexSend = new QCheckBox(tcpClientAssistBox);
+        clientHexSend->setObjectName(QStringLiteral("clientHexSend"));
+        clientHexSend->setTabletTracking(false);
+        clientHexSend->setChecked(false);
+
+        gridLayout_11->addWidget(clientHexSend, 0, 2, 1, 1);
+
+        udpStatus = new QLabel(tcpClientAssistBox);
+        udpStatus->setObjectName(QStringLiteral("udpStatus"));
+
+        gridLayout_11->addWidget(udpStatus, 1, 0, 1, 1);
+
+        openUdp = new QPushButton(tcpClientAssistBox);
+        openUdp->setObjectName(QStringLiteral("openUdp"));
+
+        gridLayout_11->addWidget(openUdp, 1, 1, 1, 1);
+
+        clientHexRev = new QCheckBox(tcpClientAssistBox);
+        clientHexRev->setObjectName(QStringLiteral("clientHexRev"));
+        clientHexRev->setChecked(false);
+
+        gridLayout_11->addWidget(clientHexRev, 1, 2, 1, 1);
+
+
+        verticalLayout_7->addLayout(gridLayout_11);
+
+        gridLayout_10 = new QGridLayout();
+        gridLayout_10->setSpacing(6);
+        gridLayout_10->setObjectName(QStringLiteral("gridLayout_10"));
+        checkBox_6 = new QCheckBox(tcpClientAssistBox);
+        checkBox_6->setObjectName(QStringLiteral("checkBox_6"));
+
+        gridLayout_10->addWidget(checkBox_6, 2, 1, 1, 1);
+
+        clearUdp = new QPushButton(tcpClientAssistBox);
+        clearUdp->setObjectName(QStringLiteral("clearUdp"));
+
+        gridLayout_10->addWidget(clearUdp, 3, 1, 1, 1);
+
+        clearTcpClient = new QPushButton(tcpClientAssistBox);
+        clearTcpClient->setObjectName(QStringLiteral("clearTcpClient"));
+
+        gridLayout_10->addWidget(clearTcpClient, 3, 0, 1, 1);
+
+        checkBox_4 = new QCheckBox(tcpClientAssistBox);
+        checkBox_4->setObjectName(QStringLiteral("checkBox_4"));
+
+        gridLayout_10->addWidget(checkBox_4, 1, 0, 1, 1);
+
+        checkBox_5 = new QCheckBox(tcpClientAssistBox);
+        checkBox_5->setObjectName(QStringLiteral("checkBox_5"));
+
+        gridLayout_10->addWidget(checkBox_5, 2, 0, 1, 1);
+
+        checkBox_3 = new QCheckBox(tcpClientAssistBox);
+        checkBox_3->setObjectName(QStringLiteral("checkBox_3"));
+
+        gridLayout_10->addWidget(checkBox_3, 0, 0, 1, 1);
+
+        tcpClientspinBox = new QSpinBox(tcpClientAssistBox);
+        tcpClientspinBox->setObjectName(QStringLiteral("tcpClientspinBox"));
+        tcpClientspinBox->setMinimum(10);
+        tcpClientspinBox->setMaximum(10000);
+        tcpClientspinBox->setSingleStep(10);
+        tcpClientspinBox->setValue(1000);
+
+        gridLayout_10->addWidget(tcpClientspinBox, 0, 1, 1, 1);
+
+        udpspinBox = new QSpinBox(tcpClientAssistBox);
+        udpspinBox->setObjectName(QStringLiteral("udpspinBox"));
+        udpspinBox->setMinimum(10);
+        udpspinBox->setMaximum(10000);
+        udpspinBox->setSingleStep(10);
+        udpspinBox->setValue(1000);
+
+        gridLayout_10->addWidget(udpspinBox, 1, 1, 1, 1);
+
+
+        verticalLayout_7->addLayout(gridLayout_10);
+
+
+        verticalLayout_8->addWidget(tcpClientAssistBox);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_8->addItem(verticalSpacer_2);
+
+
+        horizontalLayout_8->addLayout(verticalLayout_8);
+
+        verticalLayout_14 = new QVBoxLayout();
+        verticalLayout_14->setSpacing(6);
+        verticalLayout_14->setObjectName(QStringLiteral("verticalLayout_14"));
+        tcpClientRevBox = new QGroupBox(clientTab);
+        tcpClientRevBox->setObjectName(QStringLiteral("tcpClientRevBox"));
+        verticalLayout_11 = new QVBoxLayout(tcpClientRevBox);
+        verticalLayout_11->setSpacing(6);
+        verticalLayout_11->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_11->setObjectName(QStringLiteral("verticalLayout_11"));
+        verticalLayout_9 = new QVBoxLayout();
+        verticalLayout_9->setSpacing(6);
+        verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        tcpCRevLabel = new QLabel(tcpClientRevBox);
+        tcpCRevLabel->setObjectName(QStringLiteral("tcpCRevLabel"));
+        tcpCRevLabel->setMinimumSize(QSize(150, 0));
+
+        horizontalLayout_5->addWidget(tcpCRevLabel);
+
+        tcpCSendLabel = new QLabel(tcpClientRevBox);
+        tcpCSendLabel->setObjectName(QStringLiteral("tcpCSendLabel"));
+        tcpCSendLabel->setMinimumSize(QSize(150, 0));
+
+        horizontalLayout_5->addWidget(tcpCSendLabel);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_3);
+
+
+        verticalLayout_9->addLayout(horizontalLayout_5);
+
+        tcpClientRevtextEdit = new QTextEdit(tcpClientRevBox);
+        tcpClientRevtextEdit->setObjectName(QStringLiteral("tcpClientRevtextEdit"));
+        tcpClientRevtextEdit->setMinimumSize(QSize(625, 130));
+        tcpClientRevtextEdit->setMaximumSize(QSize(16777215, 16777215));
+        tcpClientRevtextEdit->setReadOnly(true);
+
+        verticalLayout_9->addWidget(tcpClientRevtextEdit);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setSpacing(6);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        udpRevLabel = new QLabel(tcpClientRevBox);
+        udpRevLabel->setObjectName(QStringLiteral("udpRevLabel"));
+        udpRevLabel->setMinimumSize(QSize(150, 0));
+
+        horizontalLayout_6->addWidget(udpRevLabel);
+
+        udpSendLabel = new QLabel(tcpClientRevBox);
+        udpSendLabel->setObjectName(QStringLiteral("udpSendLabel"));
+        udpSendLabel->setMinimumSize(QSize(150, 0));
+
+        horizontalLayout_6->addWidget(udpSendLabel);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_4);
+
+
+        verticalLayout_9->addLayout(horizontalLayout_6);
+
+        udpRevtextEdit = new QTextEdit(tcpClientRevBox);
+        udpRevtextEdit->setObjectName(QStringLiteral("udpRevtextEdit"));
+        udpRevtextEdit->setMinimumSize(QSize(0, 130));
+        udpRevtextEdit->setMaximumSize(QSize(16777215, 16777215));
+        udpRevtextEdit->setReadOnly(true);
+
+        verticalLayout_9->addWidget(udpRevtextEdit);
+
+
+        verticalLayout_11->addLayout(verticalLayout_9);
+
+
+        verticalLayout_14->addWidget(tcpClientRevBox);
+
+        tcpClientSendBox = new QGroupBox(clientTab);
+        tcpClientSendBox->setObjectName(QStringLiteral("tcpClientSendBox"));
+        verticalLayout_13 = new QVBoxLayout(tcpClientSendBox);
+        verticalLayout_13->setSpacing(6);
+        verticalLayout_13->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_13->setObjectName(QStringLiteral("verticalLayout_13"));
+        verticalLayout_12 = new QVBoxLayout();
+        verticalLayout_12->setSpacing(6);
+        verticalLayout_12->setObjectName(QStringLiteral("verticalLayout_12"));
+        tcpClientSendtextEdit = new QTextEdit(tcpClientSendBox);
+        tcpClientSendtextEdit->setObjectName(QStringLiteral("tcpClientSendtextEdit"));
+        tcpClientSendtextEdit->setMinimumSize(QSize(0, 50));
+        tcpClientSendtextEdit->setMaximumSize(QSize(16777215, 50));
+
+        verticalLayout_12->addWidget(tcpClientSendtextEdit);
+
+        tcpCLastSendComboBox = new QComboBox(tcpClientSendBox);
+        tcpCLastSendComboBox->setObjectName(QStringLiteral("tcpCLastSendComboBox"));
+        tcpCLastSendComboBox->setMinimumSize(QSize(0, 20));
+        tcpCLastSendComboBox->setMaximumSize(QSize(16777215, 20));
+
+        verticalLayout_12->addWidget(tcpCLastSendComboBox);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_5);
+
+        tcpClientSendButton = new QPushButton(tcpClientSendBox);
+        tcpClientSendButton->setObjectName(QStringLiteral("tcpClientSendButton"));
+        tcpClientSendButton->setMinimumSize(QSize(75, 23));
+        tcpClientSendButton->setMaximumSize(QSize(75, 23));
+
+        horizontalLayout_7->addWidget(tcpClientSendButton);
+
+        udpSendButton = new QPushButton(tcpClientSendBox);
+        udpSendButton->setObjectName(QStringLiteral("udpSendButton"));
+        udpSendButton->setMinimumSize(QSize(75, 23));
+        udpSendButton->setMaximumSize(QSize(75, 23));
+
+        horizontalLayout_7->addWidget(udpSendButton);
+
+        pushButton_7 = new QPushButton(tcpClientSendBox);
+        pushButton_7->setObjectName(QStringLiteral("pushButton_7"));
+        pushButton_7->setMinimumSize(QSize(75, 23));
+        pushButton_7->setMaximumSize(QSize(75, 23));
+
+        horizontalLayout_7->addWidget(pushButton_7);
+
+
+        verticalLayout_12->addLayout(horizontalLayout_7);
+
+
+        verticalLayout_13->addLayout(verticalLayout_12);
+
+
+        verticalLayout_14->addWidget(tcpClientSendBox);
+
+
+        horizontalLayout_8->addLayout(verticalLayout_14);
+
+
+        verticalLayout_15->addLayout(horizontalLayout_8);
+
         tabWidget->addTab(clientTab, QString());
 
-        gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
+        verticalLayout_10->addWidget(tabWidget);
 
         ComAssistantsClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ComAssistantsClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 875, 23));
+        menuBar->setGeometry(QRect(0, 0, 877, 23));
         ComAssistantsClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(ComAssistantsClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -493,7 +932,7 @@ public:
 
         retranslateUi(ComAssistantsClass);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
         baudrateComboBox->setCurrentIndex(7);
         openButton->setDefault(false);
 
@@ -578,6 +1017,41 @@ public:
         sendButton1->setText(QApplication::translate("ComAssistantsClass", "\345\217\221\351\200\201", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(serialTab), QApplication::translate("ComAssistantsClass", "Serial", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(serverTab), QApplication::translate("ComAssistantsClass", "TCP Server", Q_NULLPTR));
+        serverIPBOX->setTitle(QApplication::translate("ComAssistantsClass", "\347\233\256\346\240\207IP\345\234\260\345\235\200", Q_NULLPTR));
+        lineEdit->setText(QApplication::translate("ComAssistantsClass", "192.168.10.100", Q_NULLPTR));
+        pingButton->setText(QApplication::translate("ComAssistantsClass", "Ping", Q_NULLPTR));
+        tcpClientBox->setTitle(QApplication::translate("ComAssistantsClass", "TCP", Q_NULLPTR));
+        tcpLocalLabel->setText(QApplication::translate("ComAssistantsClass", "\346\234\254\345\234\260\347\253\257\345\217\243\357\274\232", Q_NULLPTR));
+        tcpPort1->setText(QApplication::translate("ComAssistantsClass", "random", Q_NULLPTR));
+        tcpTargetLabel->setText(QApplication::translate("ComAssistantsClass", "\347\233\256\346\240\207\347\253\257\345\217\243\357\274\232", Q_NULLPTR));
+        tcpPort2->setText(QApplication::translate("ComAssistantsClass", "8888", Q_NULLPTR));
+        udpBox->setTitle(QApplication::translate("ComAssistantsClass", "UDP", Q_NULLPTR));
+        udpLocalLabel->setText(QApplication::translate("ComAssistantsClass", "\346\234\254\345\234\260\347\253\257\345\217\243\357\274\232", Q_NULLPTR));
+        udpPort1->setText(QApplication::translate("ComAssistantsClass", "8000", Q_NULLPTR));
+        udpTargetLabel->setText(QApplication::translate("ComAssistantsClass", "\347\233\256\346\240\207\347\253\257\345\217\243\357\274\232", Q_NULLPTR));
+        udpPort2->setText(QApplication::translate("ComAssistantsClass", "8888", Q_NULLPTR));
+        tcpClientAssistBox->setTitle(QApplication::translate("ComAssistantsClass", "\350\276\205\345\212\251", Q_NULLPTR));
+        tcpStatus->setText(QApplication::translate("ComAssistantsClass", "<html><head/><body><p><span style=\" color:#ff0000;\">Closed</span></p></body></html>", Q_NULLPTR));
+        openTcpClient->setText(QApplication::translate("ComAssistantsClass", "\346\211\223\345\274\200TCP", Q_NULLPTR));
+        clientHexSend->setText(QApplication::translate("ComAssistantsClass", "HEX\345\217\221", Q_NULLPTR));
+        udpStatus->setText(QApplication::translate("ComAssistantsClass", "<html><head/><body><p><span style=\" color:#ff0000;\">Closed</span></p></body></html>", Q_NULLPTR));
+        openUdp->setText(QApplication::translate("ComAssistantsClass", "\346\211\223\345\274\200UDP", Q_NULLPTR));
+        clientHexRev->setText(QApplication::translate("ComAssistantsClass", "HEX\346\224\266", Q_NULLPTR));
+        checkBox_6->setText(QApplication::translate("ComAssistantsClass", "\346\230\276\347\244\272\346\227\266\351\227\264", Q_NULLPTR));
+        clearUdp->setText(QApplication::translate("ComAssistantsClass", "\346\270\205\347\251\272UDP\346\216\245\346\224\266", Q_NULLPTR));
+        clearTcpClient->setText(QApplication::translate("ComAssistantsClass", "\346\270\205\347\251\272TCP\346\216\245\346\224\266", Q_NULLPTR));
+        checkBox_4->setText(QApplication::translate("ComAssistantsClass", "UDP\350\277\236\347\273\255\345\217\221", Q_NULLPTR));
+        checkBox_5->setText(QApplication::translate("ComAssistantsClass", "\350\207\252\345\212\250\346\215\242\350\241\214", Q_NULLPTR));
+        checkBox_3->setText(QApplication::translate("ComAssistantsClass", "TCP\350\277\236\347\273\255\345\217\221", Q_NULLPTR));
+        tcpClientRevBox->setTitle(QApplication::translate("ComAssistantsClass", "\346\216\245\346\224\266\345\214\272", Q_NULLPTR));
+        tcpCRevLabel->setText(QApplication::translate("ComAssistantsClass", "TCP\346\216\245\346\224\266\357\274\232", Q_NULLPTR));
+        tcpCSendLabel->setText(QApplication::translate("ComAssistantsClass", "TCP\345\217\221\351\200\201\357\274\232", Q_NULLPTR));
+        udpRevLabel->setText(QApplication::translate("ComAssistantsClass", "UDP\346\216\245\346\224\266\357\274\232", Q_NULLPTR));
+        udpSendLabel->setText(QApplication::translate("ComAssistantsClass", "UDP\345\217\221\351\200\201\357\274\232", Q_NULLPTR));
+        tcpClientSendBox->setTitle(QApplication::translate("ComAssistantsClass", "\345\217\221\351\200\201\345\214\272", Q_NULLPTR));
+        tcpClientSendButton->setText(QApplication::translate("ComAssistantsClass", "TCP\345\217\221\351\200\201", Q_NULLPTR));
+        udpSendButton->setText(QApplication::translate("ComAssistantsClass", "UDP\345\217\221\351\200\201", Q_NULLPTR));
+        pushButton_7->setText(QApplication::translate("ComAssistantsClass", "\345\244\232\351\241\271\345\217\221\351\200\201", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(clientTab), QApplication::translate("ComAssistantsClass", "TCP Client", Q_NULLPTR));
     } // retranslateUi
 

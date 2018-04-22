@@ -5,10 +5,13 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 
+
 ComAssistants::ComAssistants(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	setUDP();
+	setTCP();
 	on_shuaxin_clicked();
 	setWindowIcon(QIcon("./image/globe.png"));
 	my_serial = new QSerialPort(this);
@@ -261,7 +264,7 @@ void ComAssistants::on_sendButton1_clicked()
 				ui.comboBox->insertItem(0, sendstr);
 				ui.comboBox->setCurrentIndex(0);
 			}
-			QString show = "";
+			QString show;
 			QByteArray sdata;
 			if (ui.HexButton_2->isChecked())
 			{
@@ -271,53 +274,32 @@ void ComAssistants::on_sendButton1_clicked()
 					sendstr = sendstr.insert(len - 1, '0'); //insert(int position, const QString & str)
 				}
 				StringToHex(sendstr, sdata);//将str字符串转换为16进制的形式
-				if (ui.ShowsendcheckBox->isChecked())
+
+				for (int i = 0; i < sdata.length(); i++)
 				{
-					for (int i = 0; i < sdata.length(); i++)
-					{
-						qint8 outChar = sdata[i];
-						QString str = QString("%1").arg(outChar & 0xFF, 2, 16, QLatin1Char('0')) + " ";
-						show += str.toUpper();
-					}
-					if (ui.ShowtimecheckBox->isChecked())
-					{
-						QString strTime = "[" + currentTime.toString("hh:mm:ss:zzz") + "] ";
-						if (ui.AutocheckBox->isChecked())
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + show + "\n");
-						else
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + show);
-					}
-					else
-					{
-						if (ui.AutocheckBox->isChecked())
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + show + "\n");
-						else
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + show);
-					}
-					ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
+					qint8 outChar = sdata[i];
+					QString str = QString("%1").arg(outChar & 0xFF, 2, 16, QLatin1Char('0')) + " ";
+					show += str.toUpper();
 				}
 			}
-			else
+			else 
 			{
-				//sdata.append(sendstr);
 				sdata.append(sendstr).toHex();
-				if (ui.ShowsendcheckBox->isChecked())
+				show += sendstr;
+			}	
+			if (ui.ShowsendcheckBox->isChecked())
+			{
+				show = "发送:" + show;
+				if (ui.ShowtimecheckBox->isChecked())
 				{
-					if (ui.ShowtimecheckBox->isChecked())
-					{
-						QString strTime = "[" + currentTime.toString("hh:mm:ss:zzz") + "] ";
-						if (ui.AutocheckBox->isChecked())
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + sendstr + "\n");
-						else
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + "发送：" + sendstr);
-					}
-					else
-					{
-						if (ui.AutocheckBox->isChecked())
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + sendstr + "\n");
-						else
-							ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + "发送：" + sendstr);
-					}
+					QString strTime = "[" + currentTime.toString("hh:mm:ss:zzz") + "] ";
+					show = strTime + show;
+				}
+				if (ui.AutocheckBox->isChecked())
+					ui.ReceiveTextEdit->append(show);
+				else
+				{
+					ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + show);
 					ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
 				}
 			}
@@ -334,10 +316,15 @@ void ComAssistants::on_sendButton1_clicked()
 
 void ComAssistants::showData()
 {
-	QString strTime = "[" + currentTime.currentTime().toString("hh:mm:ss:zzz") + "] ";
 	QByteArray showdata = my_serial->readAll();
-	qDebug() << "show data is " << showdata;
-	QString show = "接收：";
+	//qDebug() << "show data is " << showdata;
+	QString show;
+	if (ui.ShowtimecheckBox->isChecked())
+	{
+		QString strTime = "[" + currentTime.currentTime().toString("hh:mm:ss:zzz") + "] ";
+		show += strTime;
+	}
+	show += "接收:";
 	if (ui.HexButton_1->isChecked())
 	{
 		for (int i = 0; i < showdata.length(); i++)
@@ -352,15 +339,12 @@ void ComAssistants::showData()
 		show += QString(showdata);
 	}
 	if (ui.AutocheckBox->isChecked())
-		show += "\n";
-	if (ui.ShowtimecheckBox->isChecked())
-	{
-
-		ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + strTime + show);
-	}
+		ui.ReceiveTextEdit->append(show);
 	else
+	{
 		ui.ReceiveTextEdit->setText(ui.ReceiveTextEdit->toPlainText() + show);
-	ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
+		ui.ReceiveTextEdit->verticalScrollBar()->setValue(ui.ReceiveTextEdit->verticalScrollBar()->maximum());
+	}
 	totalReceive += showdata.length();
 	ui.labelRev->setText("Rx：" + QString::number(totalReceive, 10) + " Bytes");
 	//if (log.IsLog())
@@ -386,7 +370,6 @@ void ComAssistants::on_clear_clicked()
 	ui.labelSend->setText("接收：0 Bytes");
 	ui.labelRev->setText("发送：0 Bytes");
 }
-
 
 //定时重发ON/OFF
 void ComAssistants::on_sendCheckBox_clicked(bool state)
@@ -456,4 +439,294 @@ char ComAssistants::ConvertHexChar(char ch)
 	else if ((ch >= 'a') && (ch <= 'f'))
 		return ch - 'a' + 10;
 	else return ch - ch;//不在0-f范围内的会发送成0
+}
+
+
+
+void ComAssistants::setUDP()
+{
+	udpSocket = new QUdpSocket(this);
+	udpPort = ui.udpPort1->text();
+	udpTimer = new QTimer(this);
+	udptotalRev = 0;
+	udptotalSend = 0;
+	connect(udpTimer, SIGNAL(timeout()), this, SLOT(on_udpSendButton_clicked()));
+	connect(udpSocket, SIGNAL(readyRead()), this, SLOT(udpReceive()));
+}
+
+void ComAssistants::on_openUdp_clicked()
+{
+	if (ui.openUdp->text() == "打开UDP")
+	{
+		if (ui.lineEdit->text() != NULL && ui.udpPort2->text() != NULL)
+		{
+			
+			QString IP = ui.lineEdit->text();
+			if (!serverIP.setAddress(IP))
+			{
+				QMessageBox::information(this, tr("error"), tr("UDP server ip address error!"));
+				return;
+			}		
+			QString udpPort = ui.udpPort2->text();
+			if (udpSocket->bind(serverIP, udpPort.toInt()) == false)
+			{
+				QMessageBox::information(this, tr("error"), tr("udp socket create error!"));
+				return;
+			}
+			ui.openUdp->setText(tr("关闭UDP"));
+			pa.setColor(QPalette::WindowText, Qt::darkGreen);
+			ui.udpStatus->setPalette(pa);
+			ui.udpStatus->setText(tr("Opened"));
+			ui.udpPort1->setEnabled(false);
+			ui.udpPort2->setEnabled(false);
+		}		
+	}
+	else if(ui.openUdp->text() == "关闭UDP")
+	{
+		udpSocket->close();
+		ui.openUdp->setText(tr("打开UDP"));
+		pa.setColor(QPalette::WindowText, Qt::red);
+		ui.udpStatus->setPalette(pa);
+		ui.udpStatus->setText(tr("Closed"));
+		ui.udpPort1->setEnabled(true);
+		ui.udpPort2->setEnabled(true);
+	}
+
+}
+
+void ComAssistants::udpReceive()
+{
+	while (udpSocket->hasPendingDatagrams())
+	{
+		QByteArray datagram;
+		datagram.resize(udpSocket->pendingDatagramSize());
+
+		udpSocket->readDatagram(datagram.data(), datagram.size());
+		QString msg;
+		if (ui.checkBox_6->isChecked())
+		{
+			QString strTime = "[" + currentTime.currentTime().toString("hh:mm:ss:zzz") + "] ";
+			msg += strTime;
+		}
+		if (ui.clientHexRev->isChecked())
+		{
+			for (int i = 0; i < datagram.length(); i++)
+			{
+				qint8 outChar = datagram[i];
+				QString str = QString("%1").arg(outChar & 0xFF, 2, 16, QLatin1Char('0')) + " ";
+				msg += str.toUpper();
+			}
+		}
+		else
+			msg += datagram.data();
+		if (ui.checkBox_5->isChecked())
+		{
+			ui.udpRevtextEdit->append(msg);
+		}
+		else
+		{
+			ui.udpRevtextEdit->setText(ui.udpRevtextEdit->toPlainText() + msg);
+			ui.udpRevtextEdit->verticalScrollBar()->setValue(ui.udpRevtextEdit->verticalScrollBar()->maximum());
+		}
+		udptotalRev += datagram.length();
+		ui.udpRevLabel->setText("UDP接收：" + QString::number(udptotalRev, 10) + " Bytes");
+	}
+}
+
+void ComAssistants::on_udpSendButton_clicked()
+{
+	if (!ui.tcpClientSendtextEdit->toPlainText().isEmpty() && ui.openUdp->text() == "关闭UDP")
+	{
+		QByteArray dataSend;
+		QString msg = ui.tcpClientSendtextEdit->toPlainText();
+		if (ui.clientHexSend->isChecked())
+		{
+			
+			int len = msg.length();
+			if (len % 2 == 1)   //如果发送的数据个数为奇数的，则在前面最后落单的字符前添加一个字符0
+			{
+				msg = msg.insert(len - 1, '0'); //insert(int position, const QString & str)
+			}
+			StringToHex(msg, dataSend);//将str字符串转换为16进制的形式
+		}
+		else
+			dataSend = msg.toLatin1();
+		udpSocket->writeDatagram(dataSend, dataSend.length(), QHostAddress::Broadcast, udpPort.toInt());
+		udptotalSend += dataSend.length();
+		ui.udpSendLabel->setText("UDP发送：" + QString::number(udptotalSend, 10) + " Bytes");
+	}
+}
+
+void ComAssistants::on_clearUdp_clicked()
+{
+	ui.udpRevtextEdit->clear();
+	udptotalRev = 0;
+	udptotalSend = 0;
+	ui.udpRevLabel->setText("UDP接收：");
+	ui.udpSendLabel->setText("UDP发送：");
+}
+
+void ComAssistants::on_checkBox_4_clicked(bool state)
+{
+	if (state)
+	{
+		udpTimer->start(ui.udpspinBox->value());
+	}
+	else
+		udpTimer->stop();
+}
+
+void ComAssistants::on_udpspinBox_valueChanged(int value)
+{
+	if (ui.checkBox_4->isChecked())
+	{
+		udpTimer->start(value);
+	}
+}
+
+
+void ComAssistants::setTCP()
+{
+	tcpSocket = new QTcpSocket(this);
+	connect(tcpSocket, SIGNAL(connected()), this, SLOT(slotConnected()));
+	connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(slotDisconnected()));
+	connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(clientRev()));
+	tcpClientTimer = new QTimer(this);
+	connect(tcpClientTimer, SIGNAL(timeout()), this, SLOT(on_tcpClientSendButton_clicked()));
+	tcpCtotalRev = 0;
+	tcpCtotalSend = 0;
+}
+
+void ComAssistants::on_openTcpClient_clicked()
+{
+	if (ui.openTcpClient->text() == "打开TCP")
+	{
+		if (ui.lineEdit->text() != NULL && ui.tcpPort1->text() != NULL && ui.tcpPort2->text() != NULL)
+		{
+
+			QString IP = ui.lineEdit->text();
+			if (!serverIP.setAddress(IP))
+			{
+				QMessageBox::information(this, tr("error"), tr("TCP server ip address error!"));
+				return;
+			}
+			QString tcpServerPort = ui.tcpPort2->text();
+			tcpSocket->connectToHost(serverIP, tcpServerPort.toInt());
+		}
+	}
+	else if(ui.openTcpClient->text() == "关闭TCP")
+	{
+		tcpSocket->disconnectFromHost();
+	}
+}
+
+void ComAssistants::slotConnected()
+{
+	ui.openTcpClient->setText(tr("关闭TCP"));
+	pa.setColor(QPalette::WindowText, Qt::darkGreen);
+	ui.tcpStatus->setPalette(pa);
+	ui.tcpStatus->setText(tr("Opened"));
+	ui.tcpPort1->setEnabled(false);
+	ui.tcpPort2->setEnabled(false);
+}
+
+void ComAssistants::slotDisconnected()
+{
+	ui.openTcpClient->setText(tr("打开TCP"));
+	pa.setColor(QPalette::WindowText, Qt::red);
+	ui.tcpStatus->setPalette(pa);
+	ui.tcpStatus->setText(tr("Closed"));
+	ui.tcpPort1->setEnabled(true);
+	ui.tcpPort2->setEnabled(true);
+}
+
+void ComAssistants::on_tcpClientSendButton_clicked()
+{
+	if (!ui.tcpClientSendtextEdit->toPlainText().isEmpty() && ui.openTcpClient->text() == "关闭TCP")
+	{
+		QByteArray dataSend;
+		QString msg = ui.tcpClientSendtextEdit->toPlainText();
+		if (ui.clientHexSend->isChecked())
+		{
+
+			int len = msg.length();
+			if (len % 2 == 1)   //如果发送的数据个数为奇数的，则在前面最后落单的字符前添加一个字符0
+			{
+				msg = msg.insert(len - 1, '0'); //insert(int position, const QString & str)
+			}
+			StringToHex(msg, dataSend);//将str字符串转换为16进制的形式
+		}
+		else
+			dataSend = msg.toLatin1();
+		tcpSocket->write(dataSend, dataSend.length());
+		tcpCtotalSend += dataSend.length();
+		ui.tcpCSendLabel->setText("TCP发送：" + QString::number(tcpCtotalSend, 10) + " Bytes");
+	}
+}
+
+void ComAssistants::clientRev()
+{
+	while (tcpSocket->bytesAvailable()>0)
+	{
+		QByteArray datagram;
+		datagram.resize(tcpSocket->bytesAvailable());
+
+		tcpSocket->read(datagram.data(), datagram.size());
+
+		QString msg;
+		if (ui.checkBox_6->isChecked())
+		{
+			QString strTime = "[" + currentTime.currentTime().toString("hh:mm:ss:zzz") + "] ";
+			msg += strTime;
+		}
+		if (ui.clientHexRev->isChecked())
+		{
+			for (int i = 0; i < datagram.length(); i++)
+			{
+				qint8 outChar = datagram[i];
+				QString str = QString("%1").arg(outChar & 0xFF, 2, 16, QLatin1Char('0')) + " ";
+				msg += str.toUpper();
+			}
+		}
+		else
+			msg += datagram.data();
+		if (ui.checkBox_5->isChecked())
+		{
+			ui.tcpClientRevtextEdit->append(msg);
+		}
+		else
+		{
+			ui.tcpClientRevtextEdit->setText(ui.tcpClientRevtextEdit->toPlainText() + msg);
+			ui.tcpClientRevtextEdit->verticalScrollBar()->setValue(ui.udpRevtextEdit->verticalScrollBar()->maximum());
+		}
+		tcpCtotalRev += datagram.length();
+		ui.tcpCRevLabel->setText("TCP接收：" + QString::number(tcpCtotalRev, 10) + " Bytes");
+	}
+}
+
+void ComAssistants::on_clearTcpClient_clicked()
+{
+	ui.tcpClientRevtextEdit->clear();
+	tcpCtotalRev = 0;
+	tcpCtotalSend = 0;
+	ui.tcpCRevLabel->setText("TCP接收：");
+	ui.tcpCSendLabel->setText("TCP发送：");
+}
+
+void ComAssistants::on_checkBox_3_clicked(bool state)
+{
+	if (state)
+	{
+		tcpClientTimer->start(ui.udpspinBox->value());
+	}
+	else
+		tcpClientTimer->stop();
+}
+
+void ComAssistants::on_tcpClientspinBox_valueChanged(int value)
+{
+	if (ui.checkBox_3->isChecked())
+	{
+		tcpClientTimer->start(value);
+	}
 }
